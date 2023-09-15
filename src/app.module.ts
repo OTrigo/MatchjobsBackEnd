@@ -8,7 +8,8 @@ import { JobModule } from './job/job.module';
 import { PostModule } from './post/post.module';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
-import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -18,7 +19,15 @@ import { ConfigModule } from '@nestjs/config';
     JobModule,
     PostModule,
     PrismaModule,
-    ConfigModule.forRoot({ isGlobal: true }),
+    CacheModule.register({
+      isGlobal: true,
+    }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 100,
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
