@@ -6,10 +6,9 @@ import { UserModule } from './user/user.module';
 import { CompanyModule } from './company/company.module';
 import { JobModule } from './job/job.module';
 import { PostModule } from './post/post.module';
-import { PrismaService } from './prisma/prisma.service';
-import { PrismaModule } from './prisma/prisma.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -18,7 +17,6 @@ import { ThrottlerModule } from '@nestjs/throttler';
     CompanyModule,
     JobModule,
     PostModule,
-    PrismaModule,
     CacheModule.register({
       isGlobal: true,
     }),
@@ -28,8 +26,9 @@ import { ThrottlerModule } from '@nestjs/throttler';
         limit: 100,
       },
     ]),
+    MongooseModule.forRoot('mongodb://localhost/Matchjobs'),
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService],
 })
 export class AppModule {}
