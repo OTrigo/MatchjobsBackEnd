@@ -42,6 +42,15 @@ export class CreateUserDto extends UserDto {
   id: number;
 }
 
-export class LoginUserDto extends UserDto {}
+export class LoginUserDto extends UserDto {
+  @IsOptional()
+  id: number;
+
+  @IsOptional()
+  name: string;
+
+  @IsNotEmpty()
+  password: string;
+}
 
 export class UpdateUserDto extends PartialType(UserDto) {}

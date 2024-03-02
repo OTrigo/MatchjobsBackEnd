@@ -1,12 +1,23 @@
-import { Controller, Get, Post, Param, Body, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Body,
+  Delete,
+  UseInterceptors,
+} from '@nestjs/common';
 import { JobService } from './job.service';
 import { jobDto } from './dto';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
 @Controller('job')
 export class JobController {
   constructor(private jobService: JobService) {}
 
   @Get('')
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30000)
   getAll() {
     return this.jobService.getAll();
   }

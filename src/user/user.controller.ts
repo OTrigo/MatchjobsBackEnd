@@ -9,7 +9,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ParseIntPipe } from '@nestjs/common/pipes';
-import { CreateUserDto, UpdateUserDto, UserDto } from './dto';
+import { CreateUserDto, LoginUserDto, UpdateUserDto, UserDto } from './dto';
 import { UserService } from './user.service';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
@@ -22,11 +22,11 @@ export class UserController {
     return this.userService.signUp(dto);
   }
   @Post('signIn')
-  signIn(@Body() dto: CreateUserDto) {
+  signIn(@Body() dto: LoginUserDto) {
     return this.userService.signIn(dto);
   }
   @UseInterceptors(CacheInterceptor)
-  @CacheTTL(30)
+  @CacheTTL(30000)
   @Get('')
   getAll() {
     return this.userService.getAll();

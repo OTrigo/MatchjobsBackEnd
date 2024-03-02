@@ -18,7 +18,7 @@ export class CompanyController {
   constructor(private companyService: CompanyService) {}
 
   @UseInterceptors(CacheInterceptor)
-  @CacheTTL(30)
+  @CacheTTL(300000)
   @Get('')
   getAll() {
     return this.companyService.getAll();
