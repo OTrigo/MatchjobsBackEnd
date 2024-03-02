@@ -6,15 +6,19 @@ import {
   Body,
   Param,
   ParseIntPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { postDto } from './dto';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
 @Controller('post')
 export class PostController {
   constructor(private postService: PostService) {}
 
   @Get('')
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30000)
   getPosts() {
     return this.postService.getPosts();
   }

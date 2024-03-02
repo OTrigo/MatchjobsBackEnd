@@ -31,7 +31,7 @@
     "@nestjs/platform-fastify": "^10.2.4",
     "@nestjs/swagger": "^7.1.10",
     "@nestjs/throttler": "^5.0.0",
-    "@prisma/client": "^5.2.0",
+    "@prisma/client": "^5.10.2",
     "@types/bcrypt": "^5.0.0",
     "@types/compression": "^1.7.2",
     "bcrypt": "^5.1.0",

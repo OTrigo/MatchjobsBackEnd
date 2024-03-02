@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import helmet from '@fastify/helmet';
 import compression from '@fastify/compress';
 import { ValidationPipe } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -16,18 +15,10 @@ async function bootstrap() {
       ignoreTrailingSlash: true,
     }),
   );
-  const config = new DocumentBuilder()
-    .setTitle('API')
-    .setDescription('Descrição API')
-    .setVersion('1.0')
-    .addTag('API')
-    .build();
+  await app.register(helmet);
   app.useGlobalPipes(new ValidationPipe());
   await app.register(compression);
-  await app.register(helmet);
   app.enableCors();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
   await app.listen(3000, '0.0.0.0');
 }
 bootstrap();
