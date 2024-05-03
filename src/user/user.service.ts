@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto, LoginUserDto, UpdateUserDto, UserDto } from './dto';
 import { compare, hash } from 'bcrypt';
+
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,8 @@ export class UserService {
       },
     });
     if (emailExists !== null) {
-      return { message: 'email already exists!' };
+      
+      throw new HttpException('E-mail already in use', HttpStatus.CONFLICT);
     }
     const user = await this.prisma.user.create({
       data: {
@@ -38,7 +40,8 @@ export class UserService {
       const match = await compare(dto.password, user.password);
       if (match) return user;
     }
-    return { message: 'Wrong Email or Password' };
+    throw new HttpException('Wrong Email or Password', HttpStatus.UNAUTHORIZED);
+    
   }
 
   async getAll() {
