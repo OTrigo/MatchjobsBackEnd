@@ -7,6 +7,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import fastyfyMultipart from '@fastify/multipart';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -16,7 +17,9 @@ async function bootstrap() {
       ignoreTrailingSlash: true,
     }),
   );
+  
   await app.register(helmet);
+  await app.register(fastyfyMultipart);
   app.useGlobalPipes(new ValidationPipe());
   await app.register(compression);
   app.enableCors();
