@@ -17,7 +17,7 @@ async function bootstrap() {
       ignoreTrailingSlash: true,
     }),
   );
-  
+
   await app.register(helmet);
   await app.register(fastyfyMultipart);
   app.useGlobalPipes(new ValidationPipe());
