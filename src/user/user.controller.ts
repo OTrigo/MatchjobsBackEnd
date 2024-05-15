@@ -2,29 +2,23 @@ import {
   Body,
   Param,
   Controller,
-  Post,
   Get,
   Delete,
   Put,
   UseInterceptors,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ParseIntPipe } from '@nestjs/common/pipes';
-import { CreateUserDto, LoginUserDto, UpdateUserDto, UserDto } from './dto';
+import { UpdateUserDto } from './dto';
 import { UserService } from './user.service';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Post('signUp')
-  signUp(@Body() dto: CreateUserDto) {
-    return this.userService.signUp(dto);
-  }
-  @Post('signIn')
-  signIn(@Body() dto: LoginUserDto) {
-    return this.userService.signIn(dto);
-  }
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(30000)
   @Get('')
@@ -48,5 +42,11 @@ export class UserController {
   @Delete(':id')
   deleteUser(@Param('id', ParseIntPipe) id: number) {
     return this.userService.delete(id);
+  }
+
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  getMe(@Req() req: any) {
+    return req.user;
   }
 }

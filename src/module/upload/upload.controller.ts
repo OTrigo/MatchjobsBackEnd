@@ -8,13 +8,16 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
-  @Post("/")
+  @Post('/')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadfile(@UploadedFile() file: fileDTO){
-    if(file.mimetype !== 'application/pdf'){
-      throw new HttpException('File type not supported', HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+  async upload(@UploadedFile() file: fileDTO) {
+    if (file.mimetype !== 'application/pdf') {
+      throw new HttpException(
+        'File type not supported',
+        HttpStatus.UNSUPPORTED_MEDIA_TYPE,
+      );
     }
-    const result = await this.uploadService.upload(file)
+    const result = await this.uploadService.upload(file);
     return result;
   }
 }
