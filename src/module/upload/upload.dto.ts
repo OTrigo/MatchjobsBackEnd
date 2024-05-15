@@ -1,7 +1,10 @@
-export type fileDTO = {
-    fieldname: string;
-    originalname: string;
-    mimetype: string;
-    buffer: Buffer;
-    size: number;
+import { IsOptional } from 'class-validator';
+
+export class fileDTO {
+  fieldname: string;
+  originalname: string;
+  mimetype: string;
+  @IsOptional()
+  buffer: Buffer;
+  size: number;
 }
