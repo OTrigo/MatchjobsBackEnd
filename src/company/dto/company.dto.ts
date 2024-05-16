@@ -24,6 +24,7 @@ export class CompanyDto {
 
   @IsNumber()
   @ApiProperty()
+  @IsOptional()
   rating: number;
 
   @IsInt()
