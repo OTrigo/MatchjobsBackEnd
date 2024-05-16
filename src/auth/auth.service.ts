@@ -26,7 +26,7 @@ export class authService {
         password: password,
       },
     });
-    return this.signInToken(user.name, user.email, user.password);
+    return this.signInToken(user.id, user.name, user.email, user.password);
   }
 
   async signIn(dto: LoginUserDto) {
@@ -37,17 +37,20 @@ export class authService {
     });
     if (user) {
       const match = await compare(dto.password, user.password);
-      if (match) return this.signInToken(user.name, user.email, user.password);
+      if (match)
+        return this.signInToken(user.id, user.name, user.email, user.password);
     }
     throw new HttpException('Wrong Email or Password', HttpStatus.UNAUTHORIZED);
   }
 
   async signInToken(
+    id: number,
     name: string,
     email: string,
     password: string,
   ): Promise<{ access_token: string }> {
     const payload = {
+      id: id,
       name: name,
       email: email,
       password: password,
