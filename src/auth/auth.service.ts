@@ -1,9 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService, TokenExpiredError } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto, LoginUserDto } from 'src/user/dto';
-import { UserService } from 'src/user/user.service';
 
 @Injectable({})
 export class authService {
@@ -27,7 +26,7 @@ export class authService {
         password: password,
       },
     });
-    return this.signInToken(user.email, user.password);
+    return this.signInToken(user.name, user.email, user.password);
   }
 
   async signIn(dto: LoginUserDto) {
@@ -38,16 +37,18 @@ export class authService {
     });
     if (user) {
       const match = await compare(dto.password, user.password);
-      if (match) return this.signInToken(user.email, user.password);
+      if (match) return this.signInToken(user.name, user.email, user.password);
     }
     throw new HttpException('Wrong Email or Password', HttpStatus.UNAUTHORIZED);
   }
 
   async signInToken(
+    name: string,
     email: string,
     password: string,
   ): Promise<{ access_token: string }> {
     const payload = {
+      name: name,
       email: email,
       password: password,
     };
