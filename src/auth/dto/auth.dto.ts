@@ -10,6 +10,7 @@ export class AuthDto {
   @IsEmail()
   email: string;
   @IsStrongPassword()
+  @IsNotEmpty()
   @IsString()
   password: string;
 }
