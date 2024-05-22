@@ -38,7 +38,8 @@ export class UserService {
         id: id,
       },
       data: {
-        name: dto.name,
+        email: dto.email,
+        password: dto.password,
       },
     });
     return user;
