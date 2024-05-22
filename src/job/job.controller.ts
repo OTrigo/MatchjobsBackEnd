@@ -32,7 +32,7 @@ export class JobController {
     return this.jobService.createJob(dto);
   }
 
-  @Delete('')
+  @Delete(':id')
   deleteJob(@Param('id') id: string) {
     return this.jobService.deleteJob(id);
   }
