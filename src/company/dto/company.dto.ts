@@ -7,6 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 import { jobDto } from 'src/job/dto';
+import { UserDto } from 'src/user/dto';
 
 export class CompanyDto {
   @IsInt()
@@ -34,4 +35,6 @@ export class CompanyDto {
   @IsArray()
   @IsOptional()
   jobs: jobDto[];
+
+  user: UserDto;
 }
