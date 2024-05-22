@@ -22,7 +22,9 @@ async function bootstrap() {
   await app.register(fastyfyMultipart);
   app.useGlobalPipes(new ValidationPipe());
   await app.register(compression);
-  app.enableCors();
+  app.enableCors({
+    credentials: true,
+  });
   await app.listen(3000, '0.0.0.0');
 }
 bootstrap();

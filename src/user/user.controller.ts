@@ -14,6 +14,8 @@ import { UpdateUserDto } from './dto';
 import { UserService } from './user.service';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { AuthGuard } from '@nestjs/passport';
+import { Roles } from 'src/auth/roles.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Controller('user')
 export class UserController {
@@ -22,16 +24,22 @@ export class UserController {
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(30000)
   @Get('')
+  @Roles('Admin')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   getAll() {
     return this.userService.getAll();
   }
 
   @Get(':id')
+  @Roles('Admin')
+  @CacheTTL(15000)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   getUser(@Param('id', ParseIntPipe) id: number) {
     return this.userService.getUser(id);
   }
 
   @Put(':id')
+  @Roles('Admin', 'User')
   updateUser(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateUserDto,
@@ -40,12 +48,16 @@ export class UserController {
   }
 
   @Delete(':id')
-  deleteUser(@Param('id', ParseIntPipe) id: number) {
+  @Roles('Admin')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  deleteUser(@Param('id', ParseIntPipe) id: number, @Req() req: any) {
     return this.userService.delete(id);
   }
 
   @Get('me')
-  @UseGuards(AuthGuard('jwt'))
+  @Roles('User', 'Admin')
+  @CacheTTL(15000)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   getMe(@Req() req: any) {
     return req.user;
   }
