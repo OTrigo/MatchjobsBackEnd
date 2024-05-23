@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { fileDTO } from './upload.dto';
+import { fileDTO, nameDTO } from './upload.dto';
 import { createClient } from '@supabase/supabase-js';
 
 @Injectable()
 export class UploadService {
-  async upload(file: fileDTO, namefile:string) {
+  async upload(file: fileDTO, nameFile: nameDTO) {
     const supabasURL = process.env.SUPABASE_URL as string;
     const supabaseKey = process.env.SUPABASE_KEY as string;
     const supabase = createClient(supabasURL, supabaseKey, {
@@ -14,7 +14,7 @@ export class UploadService {
     });
     const data = await supabase.storage
       .from('matchjobs')
-      .upload(namefile + '.pdf', file.buffer, {
+      .upload(nameFile.nameFile + '.pdf', file.buffer, {
         upsert: true, //sobrescreve arquivos com o mesmo nome
       });
     return data;
