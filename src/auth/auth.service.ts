@@ -25,9 +25,16 @@ export class authService {
         name: dto.name,
         email: dto.email,
         password: password,
+        role: 'User',
       },
     });
-    return this.signInToken(user.id, user.name, user.email, user.password);
+    return this.signInToken(
+      user.id,
+      user.name,
+      user.email,
+      user.password,
+      user.role,
+    );
   }
 
   async signIn(dto: LoginUserDto) {
@@ -38,7 +45,14 @@ export class authService {
     });
     if (user) {
       const match = await compare(dto.password, user.password);
-      if (match) return this.signInToken(user.id,user.name, user.email, user.password);
+      if (match)
+        return this.signInToken(
+          user.id,
+          user.name,
+          user.email,
+          user.password,
+          user.role,
+        );
     }
     throw new HttpException('Wrong Email or Password', HttpStatus.UNAUTHORIZED);
   }
@@ -48,12 +62,14 @@ export class authService {
     name: string,
     email: string,
     password: string,
+    role: string,
   ): Promise<{ access_token: string }> {
     const payload = {
       id: id,
       name: name,
       email: email,
       password: password,
+      role: role,
     };
 
     const token = await this.jwt.signAsync(payload, {
