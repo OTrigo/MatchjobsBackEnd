@@ -25,6 +25,7 @@ model jobs {
   available   Boolean  @default(true)
   companyId   Int
   company     company  @relation(fields: [companyId], references: [id])
+  posts       posts[]
 }
 
 model posts {
@@ -34,6 +35,8 @@ model posts {
   description String?
   userId      Int
   user        user     @relation(fields: [userId], references: [id])
+  job         jobs?    @relation(fields: [jobsId], references: [id])
+  jobsId      Int?
 }
 
 model user {

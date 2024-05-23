@@ -65,6 +65,9 @@ export class LoginUserDto extends UserDto {
 
   @IsOptional()
   posts: object[];
+
+  @IsOptional()
+  role: string;
 }
 
 export class UpdateUserDto extends PartialType(UserDto) {}

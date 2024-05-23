@@ -24,7 +24,7 @@ export class UserController {
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(30000)
   @Get('')
-  @Roles('Admin')
+  @Roles('Admin', 'User')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   getAll() {
     return this.userService.getAll();
@@ -32,6 +32,7 @@ export class UserController {
 
   @Get(':id')
   @Roles('Admin')
+  @UseInterceptors(CacheInterceptor)
   @CacheTTL(15000)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   getUser(@Param('id', ParseIntPipe) id: number) {
@@ -40,6 +41,7 @@ export class UserController {
 
   @Put(':id')
   @Roles('Admin', 'User')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   updateUser(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateUserDto,
@@ -56,6 +58,7 @@ export class UserController {
 
   @Get('me')
   @Roles('User', 'Admin')
+  @UseInterceptors(CacheInterceptor)
   @CacheTTL(15000)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   getMe(@Req() req: any) {
