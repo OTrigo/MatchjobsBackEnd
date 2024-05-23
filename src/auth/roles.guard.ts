@@ -18,8 +18,6 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    console.log(requiredRoles);
-
     if (!requiredRoles) {
       throw new HttpException(
         'No privileges to access this page',
@@ -40,9 +38,6 @@ export class RolesGuard implements CanActivate {
     const user = this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET,
     });
-
-    console.log(requiredRoles);
-    console.log(user.role);
 
     return requiredRoles.includes(user.role);
   }
