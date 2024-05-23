@@ -10,6 +10,7 @@ import {
 } from 'class-validator';
 
 import { PartialType } from '@nestjs/mapped-types';
+import { CompanyDto } from 'src/company/dto';
 
 export class UserDto {
   @IsNumber()
@@ -35,11 +36,21 @@ export class UserDto {
   @IsOptional()
   @IsArray()
   posts: object[];
+
+  @IsNotEmpty()
+  @IsString()
+  role: string;
+
+  @IsOptional()
+  company: CompanyDto;
 }
 
 export class CreateUserDto extends UserDto {
   @IsOptional()
   id: number;
+
+  @IsOptional()
+  role: string;
 }
 
 export class LoginUserDto extends UserDto {
@@ -54,6 +65,9 @@ export class LoginUserDto extends UserDto {
 
   @IsOptional()
   posts: object[];
+
+  @IsOptional()
+  role: string;
 }
 
 export class UpdateUserDto extends PartialType(UserDto) {}
