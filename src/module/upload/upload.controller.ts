@@ -17,7 +17,7 @@ export class UploadController {
         HttpStatus.UNSUPPORTED_MEDIA_TYPE,
       );
     }
-    const result = await this.uploadService.upload(file, namefile.nameFile);
+    const result = await this.uploadService.upload(file, namefile);
     return result;
   }
 }
