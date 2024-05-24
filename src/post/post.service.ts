@@ -14,7 +14,8 @@ export class PostService {
         description: true,
         createdAt: true,
         userId: true,
-        user: true,
+        url: true,
+        user: false,
       },
     });
   }
