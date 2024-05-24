@@ -10,7 +10,7 @@ export class UploadController {
 
   @Post('/')
   @UseInterceptors(FileInterceptor('file'))
-  async upload(@UploadedFile() file: fileDTO,  @Body() namefile: nameDTO) {
+  async upload(@UploadedFile() file: fileDTO, @Body() namefile: nameDTO) {
     if (file.mimetype !== 'application/pdf') {
       throw new HttpException(
         'File type not supported',
