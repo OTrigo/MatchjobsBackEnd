@@ -12,6 +12,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { UploadModule } from './module/upload/upload.module';
 import { ConfigModule } from '@nestjs/config';
+import { UploadVideoModule } from './module/upload-video/upload-video.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ConfigModule } from '@nestjs/config';
       },
     ]),
     UploadModule,
+    UploadVideoModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

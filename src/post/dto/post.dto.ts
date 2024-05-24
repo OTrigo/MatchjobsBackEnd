@@ -20,6 +20,10 @@ export class postDto {
   @IsString()
   name: string;
 
+  @IsNotEmpty()
+  @IsString()
+  url: string;
+
   @IsString()
   @IsOptional()
   description?: string;

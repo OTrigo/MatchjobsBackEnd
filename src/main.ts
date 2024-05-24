@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import helmet from '@fastify/helmet';
 import compression from '@fastify/compress';
-import { ValidationPipe } from '@nestjs/common';
+import { RawBody, ValidationPipe } from '@nestjs/common';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -15,6 +15,7 @@ async function bootstrap() {
     new FastifyAdapter({
       logger: false,
       ignoreTrailingSlash: true,
+      bodyLimit: 5000000,
     }),
   );
 

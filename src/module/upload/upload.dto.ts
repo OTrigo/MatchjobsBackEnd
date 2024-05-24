@@ -8,6 +8,6 @@ export class fileDTO {
   buffer: Buffer;
   size: number;
 }
-export class nameDTO{
+export class nameDTO {
   nameFile: string;
 }
