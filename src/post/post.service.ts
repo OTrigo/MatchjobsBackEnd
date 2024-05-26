@@ -7,7 +7,23 @@ import { jobDto } from 'src/job/dto';
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  async getPosts() {
+  async getPage(page: number) {
+    const skip = page > 1 ? page * 10 : 0;
+    return this.prisma.posts.findMany({
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        createdAt: true,
+        userId: true,
+        user: true,
+      },
+      skip: skip,
+      take: 10,
+    });
+  }
+
+  async getAll() {
     return this.prisma.posts.findMany({
       select: {
         id: true,
