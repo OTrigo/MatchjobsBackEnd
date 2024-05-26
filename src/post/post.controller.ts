@@ -17,11 +17,18 @@ import { jobDto } from 'src/job/dto';
 export class PostController {
   constructor(private postService: PostService) {}
 
+  @Get('page/:amt')
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30000)
+  getPage(@Param('amt', ParseIntPipe) page: number) {
+    return this.postService.getPage(page);
+  }
+
   @Get('')
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(30000)
-  getPosts() {
-    return this.postService.getPosts();
+  getAll() {
+    return this.postService.getAll();
   }
 
   @Get(':id')

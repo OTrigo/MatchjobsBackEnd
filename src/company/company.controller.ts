@@ -31,6 +31,15 @@ export class CompanyController {
     return this.companyService.getAll();
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(300000)
+  @Get('page/:amt')
+  @Roles('Admin')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  getPage(@Param('amt', ParseIntPipe) page: number) {
+    return this.companyService.getPage(page);
+  }
+
   @Get(':id')
   @Roles('Admin')
   @UseGuards(AuthGuard('jwt'), RolesGuard)

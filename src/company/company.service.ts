@@ -19,6 +19,22 @@ export class CompanyService {
     });
   }
 
+  async getPage(page: number) {
+    const skip = page > 1 ? page * 10 : 0;
+    return this.prisma.company.findMany({
+      select: {
+        id: true,
+        name: true,
+        employeeAmount: true,
+        jobs: true,
+        rating: true,
+        sector: true,
+      },
+      skip: skip,
+      take: 10,
+    });
+  }
+
   async create(dto: CompanyDto) {
     const company = await this.prisma.company.create({
       data: {
