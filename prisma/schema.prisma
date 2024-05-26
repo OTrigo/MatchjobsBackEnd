@@ -25,7 +25,9 @@ model jobs {
   available   Boolean  @default(true)
   companyId   Int
   company     company  @relation(fields: [companyId], references: [id])
-  posts       posts[]
+  posts       posts?   @relation(fields: [postsId], references: [id])
+  postsId     Int?     @unique
+  user        user[]
 }
 
 model posts {
@@ -34,18 +36,22 @@ model posts {
   name        String
   description String?
   userId      Int
+  videoUrl    String?
   user        user     @relation(fields: [userId], references: [id])
-  job         jobs?    @relation(fields: [jobsId], references: [id])
+  jobs        jobs?
   jobsId      Int?
 }
 
 model user {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  posts     posts[]
-  role      String
-  company   company? @relation(fields: [companyId], references: [id])
-  companyId Int?
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  posts      posts[]
+  role       String
+  portifolio String?
+  company    company? @relation(fields: [companyId], references: [id])
+  companyId  Int?
+  jobs       jobs?    @relation(fields: [jobsId], references: [id])
+  jobsId     Int?
 }

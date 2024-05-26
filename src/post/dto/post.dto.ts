@@ -2,6 +2,7 @@ import {
   IsDate,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -31,4 +32,8 @@ export class postDto {
   @IsObject()
   @IsOptional()
   user: object;
+
+  @IsOptional()
+  @IsNumber()
+  jobId: number;
 }
