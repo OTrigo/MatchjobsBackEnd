@@ -23,6 +23,15 @@ export class UserController {
 
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(30000)
+  @Get('page/:amt')
+  @Roles('Admin', 'User')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  getPage(@Param('amt', ParseIntPipe) page: number) {
+    return this.userService.getPage(page);
+  }
+
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30000)
   @Get('')
   @Roles('Admin', 'User')
   @UseGuards(AuthGuard('jwt'), RolesGuard)

@@ -2,6 +2,7 @@ import {
   IsDate,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -20,10 +21,6 @@ export class postDto {
   @IsString()
   name: string;
 
-  @IsNotEmpty()
-  @IsString()
-  url: string;
-
   @IsString()
   @IsOptional()
   description?: string;
@@ -35,4 +32,8 @@ export class postDto {
   @IsObject()
   @IsOptional()
   user: object;
+
+  @IsOptional()
+  @IsNumber()
+  jobId: number;
 }

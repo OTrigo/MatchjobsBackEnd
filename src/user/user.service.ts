@@ -1,11 +1,24 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDto, LoginUserDto, UpdateUserDto, UserDto } from './dto';
-import { compare, hash } from 'bcrypt';
+import { UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
+
+  async getPage(page: number) {
+    const skip = page > 1 ? page * 10 : 0;
+    return this.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        posts: true,
+      },
+      skip: skip,
+      take: 10,
+    });
+  }
 
   async getAll() {
     return this.prisma.user.findMany({
@@ -38,8 +51,7 @@ export class UserService {
         id: id,
       },
       data: {
-        email: dto.email,
-        password: dto.password,
+        name: dto.name,
       },
     });
     return user;

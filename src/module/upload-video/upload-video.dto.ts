@@ -21,7 +21,7 @@ export class userIdpostDTO{
   userId: string;
 }
 export class urlpostDTO{
-  url: string;
+  videoUrl: string;
 }
 export class supaResultDTO{
   data: {
