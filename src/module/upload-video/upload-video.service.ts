@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { descriptionpostDTO, nameVideoDTO, namepostDTO, supaResultDTO, userIdpostDTO, videoDTO } from './upload-video.dto';
+import { descriptionpostDTO, nameVideoDTO, namepostDTO, userIdpostDTO, videoDTO } from './upload-video.dto';
 import { createClient } from '@supabase/supabase-js';
 import { postDto } from 'src/post/dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -46,7 +46,7 @@ export class UploadVideoService {
           name: name.name,
           description: description.description,
           userId: parseInt(userId.userId),
-          url: videoUrl,
+          videoUrl: videoUrl,
         },
       });
 
