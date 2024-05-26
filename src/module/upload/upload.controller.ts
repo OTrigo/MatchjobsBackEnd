@@ -1,7 +1,7 @@
-import { Controller, Post, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
 import { UploadService } from './upload.service';
 import { FileInterceptor, UploadedFile } from '@blazity/nest-file-fastify';
-import { fileDTO } from './upload.dto';
+import { fileDTO, nameDTO } from './upload.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Controller('upload')
@@ -10,14 +10,14 @@ export class UploadController {
 
   @Post('/')
   @UseInterceptors(FileInterceptor('file'))
-  async upload(@UploadedFile() file: fileDTO) {
+  async upload(@UploadedFile() file: fileDTO,  @Body() namefile: nameDTO) {
     if (file.mimetype !== 'application/pdf') {
       throw new HttpException(
         'File type not supported',
         HttpStatus.UNSUPPORTED_MEDIA_TYPE,
       );
     }
-    const result = await this.uploadService.upload(file);
+    const result = await this.uploadService.upload(file, namefile.nameFile);
     return result;
   }
 }
