@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { postDto } from './dto';
+import { jobDto } from 'src/job/dto';
 
 @Injectable()
 export class PostService {
@@ -35,6 +36,21 @@ export class PostService {
         userId: dto.userId,
       },
     });
+    if (dto.jobId) {
+      const postWithJob = await this.prisma.posts.update({
+        where: {
+          id: post.id,
+        },
+        data: {
+          jobs: {
+            connect: {
+              id: dto.jobId,
+            },
+          },
+        },
+      });
+      return postWithJob;
+    }
     return post;
   }
 
@@ -45,5 +61,29 @@ export class PostService {
       },
     });
     return post;
+  }
+
+  async addJob(id: number, jobdto: jobDto) {
+    const job = await this.prisma.jobs.findUnique({
+      where: {
+        id: jobdto.id,
+      },
+    });
+    if (job) {
+      const post = await this.prisma.posts.update({
+        where: {
+          id: id,
+        },
+        data: {
+          jobs: {
+            connect: {
+              id: job.id,
+            },
+          },
+        },
+      });
+      return post;
+    }
+    throw new HttpException('USER OR JOB NOT FOUND', HttpStatus.NOT_FOUND);
   }
 }
