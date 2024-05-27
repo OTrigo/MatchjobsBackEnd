@@ -50,4 +50,8 @@ export class PostController {
   addJob(@Param('id', ParseIntPipe) id: number, @Body() jobdto: jobDto) {
     return this.postService.addJob(id, jobdto);
   }
+  @Get('myposts/:id')
+  getMyPosts(@Param('id', ParseIntPipe) id: number) {
+    return this.postService.getMyPosts(id);
+  }
 }
