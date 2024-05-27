@@ -31,7 +31,7 @@ export class PostService {
         description: true,
         createdAt: true,
         userId: true,
-        url: true,
+        videoUrl: true,
         user: false,
       },
     });
@@ -46,13 +46,12 @@ export class PostService {
   }
 
   async createPost(dto: postDto) {
-    
     const post = await this.prisma.posts.create({
       data: {
         name: dto.name,
         description: dto.description,
         userId: dto.userId,
-        url : dto.url
+        videoUrl: dto.videoUrl,
       },
     });
     if (dto.jobId) {

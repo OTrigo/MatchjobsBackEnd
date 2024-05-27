@@ -24,9 +24,9 @@ model jobs {
   createdAt   DateTime @default(now())
   available   Boolean  @default(true)
   companyId   Int
+  postsId     Int?     @unique
   company     company  @relation(fields: [companyId], references: [id])
   posts       posts?   @relation(fields: [postsId], references: [id])
-  postsId     Int?     @unique
   user        user[]
 }
 
@@ -35,12 +35,11 @@ model posts {
   createdAt   DateTime @default(now())
   name        String
   description String?
-  url         String 
   userId      Int
-  videoUrl    String?
-  user        user     @relation(fields: [userId], references: [id])
-  jobs        jobs?
   jobsId      Int?
+  videoUrl    String?
+  jobs        jobs?
+  user        user     @relation(fields: [userId], references: [id])
 }
 
 model user {
@@ -48,11 +47,11 @@ model user {
   name       String
   email      String   @unique
   password   String
-  posts      posts[]
-  role       String
-  portifolio String?
-  company    company? @relation(fields: [companyId], references: [id])
   companyId  Int?
-  jobs       jobs?    @relation(fields: [jobsId], references: [id])
+  role       String
   jobsId     Int?
+  portifolio String?
+  posts      posts[]
+  company    company? @relation(fields: [companyId], references: [id])
+  jobs       jobs?    @relation(fields: [jobsId], references: [id])
 }
