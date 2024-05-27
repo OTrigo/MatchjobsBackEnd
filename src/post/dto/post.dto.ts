@@ -21,6 +21,10 @@ export class postDto {
   @IsString()
   name: string;
 
+  @IsNotEmpty()
+  @IsString()
+  videoUrl: string;
+
   @IsString()
   @IsOptional()
   description?: string;

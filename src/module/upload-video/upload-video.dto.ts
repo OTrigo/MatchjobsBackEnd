@@ -11,23 +11,23 @@ export class videoDTO {
 export class nameVideoDTO {
   nameFile: string;
 }
-export class namepostDTO{
+export class namepostDTO {
   name: string;
 }
-export class descriptionpostDTO{
+export class descriptionpostDTO {
   description: string;
 }
-export class userIdpostDTO{
+export class userIdpostDTO {
   userId: string;
 }
-export class urlpostDTO{
-  videoUrl: string;
+export class urlpostDTO {
+  url: string;
 }
-export class supaResultDTO{
+export class supaResultDTO {
   data: {
-		path: string,
-		id: string,
-		fullPath: string
-	}
-	error: string|null
+    path: string;
+    id: string;
+    fullPath: string;
+  };
+  error: string | null;
 }
