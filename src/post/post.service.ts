@@ -31,7 +31,9 @@ export class PostService {
         description: true,
         createdAt: true,
         userId: true,
-        user: true,
+        videoUrl: true,
+        user: false,
+        jobsId: true
       },
     });
   }
@@ -50,6 +52,7 @@ export class PostService {
         name: dto.name,
         description: dto.description,
         userId: dto.userId,
+        videoUrl: dto.videoUrl,
       },
     });
     if (dto.jobId) {
