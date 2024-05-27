@@ -81,6 +81,7 @@ export class PostService {
     });
     return post;
   }
+
   async addJob(id: number, jobdto: jobDto) {
     const job = await this.prisma.jobs.findUnique({
       where: {
