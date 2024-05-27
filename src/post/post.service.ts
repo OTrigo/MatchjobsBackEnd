@@ -45,6 +45,13 @@ export class PostService {
       },
     });
   }
+  async getMyPosts(id: number) {
+    return this.prisma.posts.findMany({
+      where: {
+        userId: id,
+      },
+    });
+  }
 
   async createPost(dto: postDto) {
     const post = await this.prisma.posts.create({
