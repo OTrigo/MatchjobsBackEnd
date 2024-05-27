@@ -33,6 +33,7 @@ export class PostService {
         userId: true,
         videoUrl: true,
         user: false,
+        jobsId: true
       },
     });
   }
