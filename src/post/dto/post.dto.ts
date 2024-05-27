@@ -2,6 +2,7 @@ import {
   IsDate,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -22,7 +23,7 @@ export class postDto {
 
   @IsNotEmpty()
   @IsString()
-  url: string;
+  videoUrl: string;
 
   @IsString()
   @IsOptional()
@@ -35,4 +36,8 @@ export class postDto {
   @IsObject()
   @IsOptional()
   user: object;
+
+  @IsOptional()
+  @IsNumber()
+  jobId: number;
 }

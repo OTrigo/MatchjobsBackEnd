@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDate,
@@ -12,31 +11,43 @@ import {
 export class jobDto {
   @IsNumber()
   @IsNotEmpty()
-  @ApiProperty()
+  @IsOptional()
   id: number;
 
   @IsString()
-  @ApiProperty()
   name: string;
 
   @IsString()
   @IsOptional()
-  @ApiProperty()
   description: string;
 
   @IsDate()
+  @IsOptional()
   createdAt: Date;
   @IsDate()
+  @IsOptional()
   updatedAt: Date;
 
   @IsBoolean()
-  @ApiProperty()
+  @IsOptional()
   available: boolean;
 
-  @ApiProperty()
   @IsNumber()
   companyId: number;
 
   @IsObject()
+  @IsOptional()
   company: object;
+
+  @IsObject()
+  @IsOptional()
+  user: object;
+
+  @IsNumber()
+  @IsOptional()
+  userId: number;
+
+  @IsNumber()
+  @IsOptional()
+  postId: number;
 }
