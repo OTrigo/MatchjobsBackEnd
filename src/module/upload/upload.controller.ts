@@ -3,6 +3,7 @@ import { UploadService } from './upload.service';
 import { FileInterceptor, UploadedFile } from '@blazity/nest-file-fastify';
 import { fileDTO, nameDTO } from './upload.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { UserDto } from 'src/user/dto';
 
 @Controller('upload')
 export class UploadController {
@@ -17,7 +18,7 @@ export class UploadController {
         HttpStatus.UNSUPPORTED_MEDIA_TYPE,
       );
     }
-    const result = await this.uploadService.upload(file, namefile.nameFile);
+    const result = await this.uploadService.upload(file, namefile.nameFile, namefile.userid);
     return result;
   }
 }
