@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor, UploadedFile } from '@blazity/nest-file-fastify';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { UploadVideoService } from './upload-video.service';
@@ -44,9 +44,9 @@ export class UploadVideoController {
     const result = await this.uploadVideoService.request();
     return result;
   }
-  @Get('/delete/:path')
-  async delete(@Param('path')path:string){
-    const result = await this.uploadVideoService.deleteVideo(path);
+  @Get('/delete/:path/:id')
+  async delete(@Param('path')path:string, @Param('id',ParseIntPipe) id: number){
+    const result = await this.uploadVideoService.deleteVideo(path,id);
     return result
   }
  
