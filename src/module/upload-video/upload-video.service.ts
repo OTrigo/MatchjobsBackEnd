@@ -80,7 +80,7 @@ export class UploadVideoService {
     console.log(data);
     return data;
   }
-  async deleteVideo(path:string){
+  async deleteVideo(path:string, id:number){
     const supabasURL = process.env.SUPABASE_URL as string;
     const supabaseKey = process.env.SUPABASE_KEY as string;
     const supabase = createClient(supabasURL, supabaseKey,{
@@ -90,6 +90,14 @@ export class UploadVideoService {
     });
     const result = await supabase.storage
         .from('matchjobsVideos').remove([path])
-      return result;
+      if(!result){
+        throw new Error(`Error`);
+      }
+      const data = await this.prisma.posts.delete({
+        where:{
+          id: id
+        }
+      })
+      return data
   }
 }
