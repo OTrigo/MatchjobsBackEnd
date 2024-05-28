@@ -10,4 +10,6 @@ export class fileDTO {
 }
 export class nameDTO {
   nameFile: string;
+  userid: string
 }
+

@@ -80,4 +80,16 @@ export class UploadVideoService {
     console.log(data);
     return data;
   }
+  async deleteVideo(path:string){
+    const supabasURL = process.env.SUPABASE_URL as string;
+    const supabaseKey = process.env.SUPABASE_KEY as string;
+    const supabase = createClient(supabasURL, supabaseKey,{
+      auth: {
+        persistSession: false,
+      },
+    });
+    const result = await supabase.storage
+        .from('matchjobsVideos').remove([path])
+      return result;
+  }
 }
