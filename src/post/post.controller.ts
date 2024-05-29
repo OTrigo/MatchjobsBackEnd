@@ -41,7 +41,7 @@ export class PostController {
     return this.postService.createPost(dto);
   }
 
-  @Delete('')
+  @Delete('/:id')
   deletePost(@Param('id', ParseIntPipe) id: number) {
     return this.postService.deletePost(id);
   }
