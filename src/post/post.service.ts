@@ -8,7 +8,7 @@ export class PostService {
   constructor(private prisma: PrismaService) {}
 
   async getPage(page: number) {
-    const total = await this.prisma.posts.count()
+    const total = await this.prisma.posts.count();
     const posts = await this.prisma.posts.findMany({
       select: {
         id: true,
@@ -18,10 +18,10 @@ export class PostService {
         userId: true,
         user: true,
       },
-      skip: (page-1) * 10,
+      skip: (page - 1) * 10,
       take: 10,
     });
-    return {posts, total}
+    return { posts, total };
   }
 
   async getAll() {
@@ -34,7 +34,7 @@ export class PostService {
         userId: true,
         videoUrl: true,
         user: false,
-        jobsId: true
+        jobsId: true,
       },
     });
   }

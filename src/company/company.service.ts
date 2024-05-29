@@ -20,7 +20,7 @@ export class CompanyService {
   }
 
   async getPage(page: number) {
-    const total = await this.prisma.company.count()
+    const total = await this.prisma.company.count();
     const companies = await this.prisma.company.findMany({
       select: {
         id: true,
@@ -30,11 +30,10 @@ export class CompanyService {
         rating: true,
         sector: true,
       },
-      skip: (page-1)*10,
+      skip: (page - 1) * 10,
       take: 10,
     });
-    return {companies, total}
-      
+    return { companies, total };
   }
 
   async create(dto: CompanyDto) {
