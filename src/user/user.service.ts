@@ -7,17 +7,18 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async getPage(page: number) {
-    const skip = page > 1 ? page * 10 : 0;
-    return this.prisma.user.findMany({
+    const total = await this.prisma.user.count()
+    const userpage = await this.prisma.user.findMany({
       select: {
         id: true,
         name: true,
         email: true,
         posts: true,
       },
-      skip: skip,
+      skip: (page-1) * 10,
       take: 10,
     });
+    return {userpage, total}
   }
 
   async getAll() {
