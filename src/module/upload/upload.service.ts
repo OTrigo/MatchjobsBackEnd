@@ -14,23 +14,22 @@ export class UploadService {
         persistSession: false,
       },
     });
-    const data:any = await supabase.storage
+    const data: any = await supabase.storage
       .from('matchjobs')
       .upload(namefile + '.pdf', file.buffer, {
         upsert: true, //sobrescreve arquivos com o mesmo nome
-      })
-      if (!data.data.path) {
-        throw new Error('Erro ao obter a URL do vídeo');
-      }
-        const user = await this.prisma.user.update({
-          data:{
-            portifolio: data.data.path
-          },
-          where:{
-            id: parseInt(userid)
-          }
-          
-        })
-        return user;
+      });
+    if (!data.data.path) {
+      throw new Error('Erro ao obter a URL do vídeo');
+    }
+    const user = await this.prisma.user.update({
+      data: {
+        portifolio: data.data.path,
+      },
+      where: {
+        id: parseInt(userid),
+      },
+    });
+    return user;
   }
 }
