@@ -1,6 +1,13 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor, UploadedFile } from '@blazity/nest-file-fastify';
-import { HttpException, HttpStatus } from '@nestjs/common';
 import { UploadVideoService } from './upload-video.service';
 import {
   videoDTO,
@@ -23,13 +30,6 @@ export class UploadVideoController {
     @Body() description: descriptionpostDTO,
     @Body() userId: userIdpostDTO,
   ) {
-    // if (file.mimetype !== 'application/pdf') {
-    //   throw new HttpException(
-    //     'File type not supported',
-    //     HttpStatus.UNSUPPORTED_MEDIA_TYPE,
-    //   );
-    // }
-
     const result = await this.uploadVideoService.upload(
       file,
       namefile,
@@ -45,11 +45,11 @@ export class UploadVideoController {
     return result;
   }
   @Get('/delete/:path/:id')
-  async delete(@Param('path')path:string, @Param('id',ParseIntPipe) id: number){
-    const result = await this.uploadVideoService.deleteVideo(path,id);
-    return result
+  async delete(
+    @Param('path') path: string,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const result = await this.uploadVideoService.deleteVideo(path, id);
+    return result;
   }
- 
-  
-
 }
