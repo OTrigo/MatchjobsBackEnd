@@ -36,6 +36,9 @@ export class PostService {
         user: false,
         jobsId: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
@@ -50,6 +53,9 @@ export class PostService {
     return this.prisma.posts.findMany({
       where: {
         userId: id,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
   }
