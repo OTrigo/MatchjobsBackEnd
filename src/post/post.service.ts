@@ -50,7 +50,12 @@ export class PostService {
     });
   }
   async getMyPosts(id: number) {
-    return this.prisma.posts.findMany({
+    const total = await this.prisma.posts.count({
+      where:{
+        userId: id
+      }
+    });
+    const posts = await this.prisma.posts.findMany({
       where: {
         userId: id,
       },
@@ -58,6 +63,8 @@ export class PostService {
         createdAt: 'desc',
       },
     });
+
+    return {posts, total}
   }
 
   async createPost(dto: postDto) {
