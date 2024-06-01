@@ -70,4 +70,8 @@ export class LoginUserDto extends UserDto {
   role: string;
 }
 
-export class UpdateUserDto extends PartialType(UserDto) {}
+export class UpdateUserDto extends PartialType(UserDto) {
+  @IsNotEmpty()
+  password: string;
+  email: string;
+}
