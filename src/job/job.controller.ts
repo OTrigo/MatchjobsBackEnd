@@ -46,4 +46,18 @@ export class JobController {
   ) {
     return this.jobService.sendPortifolio(id, userdto);
   }
+  @Get('/company/:id')
+  getCompany(
+    @Param('id', ParseIntPipe) id: number,
+  ){
+    return this.jobService.getCompany(id)
+  }
+  @Get('/candidates/:id')
+  getCandidates(
+    @Param('id', ParseIntPipe) id: number,
+  ){
+    return this.jobService.getCandidates(id)
+  }
+  
+
 }
