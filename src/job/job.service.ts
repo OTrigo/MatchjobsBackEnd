@@ -74,4 +74,33 @@ export class JobService {
     }
     throw new HttpException('USER OR JOB NOT FOUND', HttpStatus.NOT_FOUND);
   }
+  async getCompany(id: number) {
+    const jobs = await this.prisma.jobs.findMany({
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        createdAt: true,
+        available: true,
+        company: true,
+        companyId: true,
+        user: true
+      }, where: {
+        companyId: id,
+      },
+    });
+    return jobs;
+  }
+  async getCandidates(id: number) {
+    const jobs = await this.prisma.jobs.findMany({
+      select: {
+        id: true,
+        name: true,
+        user: true
+      }, where: {
+        id: id,
+      },
+    });
+    return jobs;
+  }
 }
