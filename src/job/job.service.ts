@@ -103,4 +103,18 @@ export class JobService {
     });
     return jobs;
   }
+
+  async update(id: number, jobdto: jobDto) {
+    const job = await this.prisma.jobs.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: jobdto.name,
+        description: jobdto.description,
+        companyId: jobdto.companyId,
+      },
+    });
+    return job;
+  }
 }
