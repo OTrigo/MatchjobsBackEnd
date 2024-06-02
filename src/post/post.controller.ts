@@ -4,6 +4,7 @@ import {
   Post,
   Delete,
   Body,
+  Put,
   Param,
   ParseIntPipe,
   UseInterceptors,
@@ -53,5 +54,10 @@ export class PostController {
   @Get('myposts/:id')
   getMyPosts(@Param('id', ParseIntPipe) id: number) {
     return this.postService.getMyPosts(id);
+  }
+
+  @Put(':id')
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: postDto) {
+    return this.postService.update(id, dto);
   }
 }

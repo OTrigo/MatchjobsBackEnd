@@ -126,4 +126,20 @@ export class PostService {
     }
     throw new HttpException('USER OR JOB NOT FOUND', HttpStatus.NOT_FOUND);
   }
+
+  async update(id: number, postdto: postDto) {
+    const post = await this.prisma.posts.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: postdto.name,
+        description: postdto.description,
+        userId: postdto.userId,
+        videoUrl: postdto.videoUrl,
+        jobsId: postdto.jobId
+      },
+    });
+    return post;
+  }
 }
