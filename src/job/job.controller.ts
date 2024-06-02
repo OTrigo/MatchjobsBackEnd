@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Param,
+  Put,
   Body,
   Delete,
   UseInterceptors,
@@ -59,5 +60,9 @@ export class JobController {
     return this.jobService.getCandidates(id)
   }
   
+  @Put(':id')
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: jobDto){
+    return this.jobService.update(id,dto)
+  }
 
 }
