@@ -116,6 +116,7 @@ export class PostService {
           id: id,
         },
         data: {
+          jobsId: job.id,
           jobs: {
             connect: {
               id: job.id,
