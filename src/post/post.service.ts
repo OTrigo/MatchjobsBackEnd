@@ -17,6 +17,7 @@ export class PostService {
         createdAt: true,
         userId: true,
         user: true,
+        videoUrl: true,
       },
       skip: (page - 1) * 10,
       take: 10,
