@@ -55,7 +55,7 @@ export class UserService {
       },
       data: {
         email: dto.email,
-        password: password
+        password: password,
       },
     });
     return user;

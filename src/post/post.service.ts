@@ -52,9 +52,9 @@ export class PostService {
   }
   async getMyPosts(id: number) {
     const total = await this.prisma.posts.count({
-      where:{
-        userId: id
-      }
+      where: {
+        userId: id,
+      },
     });
     const posts = await this.prisma.posts.findMany({
       where: {
@@ -65,7 +65,7 @@ export class PostService {
       },
     });
 
-    return {posts, total}
+    return { posts, total };
   }
 
   async createPost(dto: postDto) {
@@ -139,7 +139,7 @@ export class PostService {
         description: postdto.description,
         userId: postdto.userId,
         videoUrl: postdto.videoUrl,
-        jobsId: postdto.jobId
+        jobsId: postdto.jobId,
       },
     });
     return post;

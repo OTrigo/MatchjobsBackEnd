@@ -17,6 +17,7 @@ export class JobService {
         available: true,
         company: true,
         companyId: true,
+        user: true,
       },
     });
     return jobs;
@@ -84,8 +85,9 @@ export class JobService {
         available: true,
         company: true,
         companyId: true,
-        user: true
-      }, where: {
+        user: true,
+      },
+      where: {
         companyId: id,
       },
     });
@@ -96,8 +98,9 @@ export class JobService {
       select: {
         id: true,
         name: true,
-        user: true
-      }, where: {
+        user: true,
+      },
+      where: {
         id: id,
       },
     });
