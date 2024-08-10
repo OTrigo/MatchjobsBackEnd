@@ -70,6 +70,19 @@ export class LoginUserDto extends UserDto {
   role: string;
 }
 
+export class CreateBusinessUserDto extends UserDto {
+  @IsOptional()
+  id: number;
+
+  @IsOptional()
+  role: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @ApiProperty()
+  companyId: number;
+}
+
 export class UpdateUserDto extends PartialType(UserDto) {
   @IsNotEmpty()
   password: string;
