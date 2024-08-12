@@ -8,11 +8,11 @@ export class PostService {
   constructor(private prisma: PrismaService) {}
 
   async getPage(page: number) {
-    const total = await this.prisma.posts.count();
-    const posts = await this.prisma.posts.findMany({
+    const total = await this.prisma.post.count();
+    const posts = await this.prisma.post.findMany({
       select: {
         id: true,
-        name: true,
+        title: true,
         description: true,
         createdAt: true,
         userId: true,
@@ -26,16 +26,16 @@ export class PostService {
   }
 
   async getAll() {
-    return this.prisma.posts.findMany({
+    return this.prisma.post.findMany({
       select: {
         id: true,
-        name: true,
+        title: true,
         description: true,
         createdAt: true,
         userId: true,
         videoUrl: true,
         user: false,
-        jobsId: true,
+        jobId: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -43,20 +43,20 @@ export class PostService {
     });
   }
 
-  async getPost(id: number) {
-    return this.prisma.posts.findUnique({
+  async getPost(id: string) {
+    return this.prisma.post.findUnique({
       where: {
         id: id,
       },
     });
   }
-  async getMyPosts(id: number) {
-    const total = await this.prisma.posts.count({
+  async getMyPosts(id: string) {
+    const total = await this.prisma.post.count({
       where: {
         userId: id,
       },
     });
-    const posts = await this.prisma.posts.findMany({
+    const posts = await this.prisma.post.findMany({
       where: {
         userId: id,
       },
@@ -69,21 +69,21 @@ export class PostService {
   }
 
   async createPost(dto: postDto) {
-    const post = await this.prisma.posts.create({
+    const post = await this.prisma.post.create({
       data: {
-        name: dto.name,
+        title: dto.title,
         description: dto.description,
         userId: dto.userId,
         videoUrl: dto.videoUrl,
       },
     });
     if (dto.jobId) {
-      const postWithJob = await this.prisma.posts.update({
+      const postWithJob = await this.prisma.post.update({
         where: {
           id: post.id,
         },
         data: {
-          jobs: {
+          job: {
             connect: {
               id: dto.jobId,
             },
@@ -95,8 +95,8 @@ export class PostService {
     return post;
   }
 
-  async deletePost(id: number) {
-    const post = await this.prisma.posts.delete({
+  async deletePost(id: string) {
+    const post = await this.prisma.post.delete({
       where: {
         id: id,
       },
@@ -104,22 +104,21 @@ export class PostService {
     return post;
   }
 
-  async addJob(id: number, jobdto: jobDto) {
-    const job = await this.prisma.jobs.findUnique({
+  async addJob(id: string, jobdto: jobDto) {
+    const job = await this.prisma.job.findUnique({
       where: {
         id: jobdto.id,
       },
     });
     if (job) {
-      const post = await this.prisma.posts.update({
+      const post = await this.prisma.post.update({
         where: {
           id: id,
         },
         data: {
-          jobsId: job.id,
-          jobs: {
+          job: {
             connect: {
-              id: job.id,
+              id: jobdto.id,
             },
           },
         },
@@ -129,17 +128,17 @@ export class PostService {
     throw new HttpException('USER OR JOB NOT FOUND', HttpStatus.NOT_FOUND);
   }
 
-  async update(id: number, postdto: postDto) {
-    const post = await this.prisma.posts.update({
+  async update(id: string, postdto: postDto) {
+    const post = await this.prisma.post.update({
       where: {
         id: id,
       },
       data: {
-        name: postdto.name,
+        title: postdto.title,
         description: postdto.description,
         userId: postdto.userId,
         videoUrl: postdto.videoUrl,
-        jobsId: postdto.jobId,
+        jobId: postdto.jobId,
       },
     });
     return post;

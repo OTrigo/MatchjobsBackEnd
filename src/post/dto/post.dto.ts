@@ -6,12 +6,13 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 
 export class postDto {
   @IsOptional()
-  @IsInt()
-  id: number;
+  @IsString()
+  id: string;
 
   @IsDate()
   @IsOptional()
@@ -19,25 +20,24 @@ export class postDto {
 
   @IsNotEmpty()
   @IsString()
-  name: string;
+  title: string;
 
   @IsNotEmpty()
   @IsString()
   videoUrl: string;
 
   @IsString()
-  @IsOptional()
-  description?: string;
+  description: string;
 
   @IsNotEmpty()
-  @IsInt()
-  userId: number;
+  @IsString()
+  userId: string;
 
   @IsObject()
   @IsOptional()
   user: object;
 
   @IsOptional()
-  @IsNumber()
-  jobId: number;
+  @IsString()
+  jobId: string;
 }

@@ -7,12 +7,12 @@ import {
   Body,
   Delete,
   UseInterceptors,
-  ParseIntPipe,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { JobService } from './job.service';
 import { jobDto } from './dto';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
-import { UserDto } from 'src/user/dto';
+import { Roles } from 'src/auth/roles.decorator';
 
 @Controller('job')
 export class JobController {
@@ -26,38 +26,42 @@ export class JobController {
   }
 
   @Get(':id')
-  getJob(@Param('id', ParseIntPipe) id: number) {
+  getJob(@Param('id', ParseUUIDPipe) id: string) {
     return this.jobService.getJob(id);
   }
 
   @Post('')
+  @Roles('Company', 'Recruiter')
   createJob(@Body() dto: jobDto) {
     return this.jobService.createJob(dto);
   }
 
   @Delete(':id')
-  deleteJob(@Param('id', ParseIntPipe) id: number) {
+  deleteJob(@Param('id', ParseUUIDPipe) id: string) {
     return this.jobService.deleteJob(id);
   }
 
+  /*
   @Post('portifolio/:id')
   sendPortifolio(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() userdto: UserDto,
   ) {
     return this.jobService.sendPortifolio(id, userdto);
   }
+  */
   @Get('/company/:id')
-  getCompany(@Param('id', ParseIntPipe) id: number) {
+  getCompany(@Param('id', ParseUUIDPipe) id: string) {
     return this.jobService.getCompany(id);
   }
+
   @Get('/candidates/:id')
-  getCandidates(@Param('id', ParseIntPipe) id: number) {
+  getCandidates(@Param('id', ParseUUIDPipe) id: string) {
     return this.jobService.getCandidates(id);
   }
 
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: jobDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: jobDto) {
     return this.jobService.update(id, dto);
   }
 }
