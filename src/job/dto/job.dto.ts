@@ -9,13 +9,13 @@ import {
 } from 'class-validator';
 
 export class jobDto {
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   @IsOptional()
-  id: number;
+  id: string;
 
   @IsString()
-  name: string;
+  title: string;
 
   @IsString()
   @IsOptional()
@@ -24,6 +24,7 @@ export class jobDto {
   @IsDate()
   @IsOptional()
   createdAt: Date;
+
   @IsDate()
   @IsOptional()
   updatedAt: Date;
@@ -32,8 +33,8 @@ export class jobDto {
   @IsOptional()
   available: boolean;
 
-  @IsNumber()
-  companyId: number;
+  @IsString()
+  companyId: string;
 
   @IsObject()
   @IsOptional()

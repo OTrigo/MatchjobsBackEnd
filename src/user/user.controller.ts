@@ -9,7 +9,7 @@ import {
   UseGuards,
   Req,
 } from '@nestjs/common';
-import { ParseIntPipe } from '@nestjs/common/pipes';
+import { ParseIntPipe, ParseUUIDPipe } from '@nestjs/common/pipes';
 import { UpdateUserDto } from './dto';
 import { UserService } from './user.service';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
@@ -44,7 +44,7 @@ export class UserController {
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(15000)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  getUser(@Param('id', ParseIntPipe) id: number) {
+  getUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.getUser(id);
   }
 
@@ -52,7 +52,7 @@ export class UserController {
   @Roles('Admin', 'User')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   updateUser(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateUserDto,
   ) {
     return this.userService.updateUser(id, dto);
@@ -61,7 +61,7 @@ export class UserController {
   @Delete(':id')
   @Roles('Admin', 'User')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  deleteUser(@Param('id', ParseIntPipe) id: number, @Req() req: any) {
+  deleteUser(@Param('id', ParseUUIDPipe) id: string, @Req() req: any) {
     return this.userService.delete(id);
   }
 

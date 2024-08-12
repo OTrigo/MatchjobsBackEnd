@@ -7,15 +7,16 @@ import {
   IsString,
   IsStrongPassword,
   IsArray,
+  IsUUID,
 } from 'class-validator';
 
 import { PartialType } from '@nestjs/mapped-types';
 import { CompanyDto } from 'src/company/dto';
 
 export class UserDto {
-  @IsNumber()
+  @IsString()
   @ApiProperty()
-  id: number;
+  id: string;
 
   @IsNotEmpty()
   @IsEmail()
@@ -47,7 +48,7 @@ export class UserDto {
 
 export class CreateUserDto extends UserDto {
   @IsOptional()
-  id: number;
+  id: string;
 
   @IsOptional()
   role: string;
@@ -55,7 +56,7 @@ export class CreateUserDto extends UserDto {
 
 export class LoginUserDto extends UserDto {
   @IsOptional()
-  id: number;
+  id: string;
 
   @IsOptional()
   name: string;
@@ -72,15 +73,15 @@ export class LoginUserDto extends UserDto {
 
 export class CreateBusinessUserDto extends UserDto {
   @IsOptional()
-  id: number;
+  id: string;
 
   @IsOptional()
   role: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   @ApiProperty()
-  companyId: number;
+  companyId: string;
 }
 
 export class UpdateUserDto extends PartialType(UserDto) {

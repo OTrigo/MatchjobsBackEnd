@@ -1,30 +1,30 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { jobDto } from './dto';
-import { UserDto } from 'src/user/dto';
 
 @Injectable()
 export class JobService {
   constructor(private prisma: PrismaService) {}
 
   async getAll() {
-    const jobs = await this.prisma.jobs.findMany({
+    const jobs = await this.prisma.job.findMany({
       select: {
         id: true,
-        name: true,
+        title: true,
         description: true,
         createdAt: true,
+        updatedAt: true,
         available: true,
         company: true,
         companyId: true,
-        user: true,
+        application: true,
       },
     });
     return jobs;
   }
 
-  async getJob(id: number) {
-    return this.prisma.jobs.findUnique({
+  async getJob(id: string) {
+    return this.prisma.job.findUnique({
       where: {
         id: id,
       },
@@ -32,9 +32,9 @@ export class JobService {
   }
 
   async createJob(dto: jobDto) {
-    const job = await this.prisma.jobs.create({
+    const job = await this.prisma.job.create({
       data: {
-        name: dto.name,
+        title: dto.title,
         description: dto.description,
         companyId: dto.companyId,
       },
@@ -42,8 +42,8 @@ export class JobService {
     return job;
   }
 
-  async deleteJob(id: number) {
-    const job = await this.prisma.jobs.delete({
+  async deleteJob(id: string) {
+    const job = await this.prisma.job.delete({
       where: {
         id: id,
       },
@@ -51,14 +51,15 @@ export class JobService {
     return job;
   }
 
-  async sendPortifolio(id: number, userdto: UserDto) {
+  /*
+  async sendPortifolio(id: string, userdto: UserDto) {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userdto.id,
       },
     });
     if (user) {
-      const job = await this.prisma.jobs.update({
+      const job = await this.prisma.job.update({
         where: {
           id: id,
         },
@@ -75,30 +76,32 @@ export class JobService {
     }
     throw new HttpException('USER OR JOB NOT FOUND', HttpStatus.NOT_FOUND);
   }
-  async getCompany(id: number) {
-    const jobs = await this.prisma.jobs.findMany({
+  */
+  async getCompany(id: string) {
+    const job = await this.prisma.job.findMany({
       select: {
         id: true,
-        name: true,
+        title: true,
         description: true,
         createdAt: true,
+        updatedAt: true,
         available: true,
         company: true,
         companyId: true,
-        user: true,
+        application: true,
       },
       where: {
         companyId: id,
       },
     });
-    return jobs;
+    return job;
   }
-  async getCandidates(id: number) {
-    const jobs = await this.prisma.jobs.findMany({
+  async getCandidates(id: string) {
+    const jobs = await this.prisma.job.findMany({
       select: {
         id: true,
-        name: true,
-        user: true,
+        title: true,
+        application: true,
       },
       where: {
         id: id,
@@ -107,13 +110,13 @@ export class JobService {
     return jobs;
   }
 
-  async update(id: number, jobdto: jobDto) {
-    const job = await this.prisma.jobs.update({
+  async update(id: string, jobdto: jobDto) {
+    const job = await this.prisma.job.update({
       where: {
         id: id,
       },
       data: {
-        name: jobdto.name,
+        title: jobdto.title,
         description: jobdto.description,
         companyId: jobdto.companyId,
       },

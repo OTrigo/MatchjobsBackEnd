@@ -7,53 +7,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model company {
-  id             Int    @id @default(autoincrement())
-  name           String
-  sector         String
-  employeeAmount Int
-  rating         Float  @default(5)
-  jobs           jobs[]
-  user           user[]
+model user {
+  id          String        @id @default(cuid()) @db.VarChar(30)
+  email       String        @unique @db.VarChar(255)
+  password    String        @db.VarChar(255)
+  name        String        @db.VarChar(255)
+  role        String        @default("User") @db.VarChar(30)
+  portifolio  String?       @db.Text
+  address     String?       @db.VarChar(255)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  companyId   String?       @db.VarChar(30)
+  post        post[]
+  application application[]
+  company     company?      @relation(fields: [companyId], references: [id])
 }
 
-model jobs {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  available   Boolean  @default(true)
-  companyId   Int
-  postsId     Int?     @unique
-  company     company  @relation(fields: [companyId], references: [id])
-  posts       posts?   @relation(fields: [postsId], references: [id])
+model company {
+  id          String        @id @default(cuid()) @db.VarChar(30)
+  name        String        @db.VarChar(255)
+  sector      String        @db.VarChar(255)
+  employees   Int           @db.Integer
+  rating      Float         @default(5) @db.DoublePrecision
+  job         job[]
+  application application[]
   user        user[]
 }
 
-model posts {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  name        String
-  description String?
-  userId      Int
-  jobsId      Int?
-  videoUrl    String?
-  jobs        jobs?
-  user        user     @relation(fields: [userId], references: [id])
+model job {
+  id          String        @id @default(cuid()) @db.VarChar(30)
+  title       String        @db.VarChar(60)
+  description String        @db.VarChar(255)
+  available   Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  post        post[]
+  application application[]
+  company     company?      @relation(fields: [companyId], references: [id])
+  companyId   String?       @db.VarChar(30)
 }
 
-model user {
-  id         Int      @id @default(autoincrement())
-  name       String
-  email      String   @unique
-  password   String
-  companyId  Int?
-  role       String
-  jobsId     Int?
-  portifolio String?
-  posts      posts[]
-  company    company? @relation(fields: [companyId], references: [id])
-  jobs       jobs?    @relation(fields: [jobsId], references: [id])
+model application {
+  id        String   @id @default(cuid()) @db.VarChar(30)
+  userId    String   @db.VarChar(30)
+  jobId     String   @db.VarChar(30)
+  companyId String?  @db.VarChar(30)
+  user      user     @relation(fields: [userId], references: [id])
+  job       job      @relation(fields: [jobId], references: [id])
+  company   company? @relation(fields: [companyId], references: [id])
+}
+
+model post {
+  id          String   @id @default(cuid()) @db.VarChar(30)
+  title       String   @db.VarChar(60)
+  description String   @db.VarChar(255)
+  videoUrl    String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String   @db.VarChar(30)
+  jobId       String?  @db.VarChar(30)
+  user        user     @relation(fields: [userId], references: [id])
+  job         job?     @relation(fields: [jobId], references: [id])
 }

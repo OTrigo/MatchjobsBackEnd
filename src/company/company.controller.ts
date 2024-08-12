@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UseGuards,
   Req,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CompanyDto } from './dto';
@@ -43,7 +44,7 @@ export class CompanyController {
   @Get(':id')
   @Roles('Admin')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  getCompany(@Param('id', ParseIntPipe) id: number) {
+  getCompany(@Param('id', ParseUUIDPipe) id: string) {
     return this.companyService.getCompany(id);
   }
 
@@ -57,14 +58,14 @@ export class CompanyController {
   @Put(':id')
   @Roles('Company', 'Admin')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: CompanyDto) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: CompanyDto) {
     return this.companyService.update(id, dto);
   }
 
   @Delete(':id')
   @Roles('Admin')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.companyService.delete(id);
   }
 
