@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { authService } from './auth.service';
 import {
   CreateBusinessUserDto,
@@ -17,7 +24,7 @@ export class authController {
   }
 
   @Post('signUpBussiness')
-  @Roles('Company')
+  @Roles('Company', 'Admin')
   signUpBussiness(@Body() dto: CreateBusinessUserDto) {
     return this.authService.signUpBusiness(dto);
   }

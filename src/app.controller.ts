@@ -8,7 +8,7 @@ export class AppController {
 
   @Get()
   @UseInterceptors(CacheInterceptor)
-  @CacheTTL(30000)
+  @CacheTTL(300000)
   getHello(): string {
     return this.appService.getHello();
   }

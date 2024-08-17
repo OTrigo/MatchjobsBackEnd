@@ -69,4 +69,17 @@ export class UserService {
     });
     return user;
   }
+
+  async addRecruiterUser(id: string, dto: CompanyDto) {
+    const user = await this.prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        role: 'Recruiter',
+        companyId: dto.id,
+      },
+    });
+    return user;
+  }
 }
