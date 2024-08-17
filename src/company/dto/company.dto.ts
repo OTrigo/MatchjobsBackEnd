@@ -13,7 +13,7 @@ export class CompanyDto {
   @IsString()
   @IsOptional()
   @ApiProperty()
-  id: number;
+  id: string;
 
   @IsString()
   @ApiProperty()
