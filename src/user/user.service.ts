@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { hash } from 'bcrypt';
+import { CompanyDto } from 'src/company/dto';
 
 @Injectable()
 export class UserService {
@@ -14,7 +15,7 @@ export class UserService {
         id: true,
         name: true,
         email: true,
-        posts: true,
+        post: true,
       },
       skip: (page - 1) * 10,
       take: 10,
@@ -28,12 +29,12 @@ export class UserService {
         id: true,
         name: true,
         email: true,
-        posts: true,
+        post: true,
       },
     });
   }
 
-  async getUser(id: number) {
+  async getUser(id: string) {
     return this.prisma.user.findUnique({
       where: {
         id: id,
@@ -42,12 +43,12 @@ export class UserService {
         id: true,
         name: true,
         email: true,
-        posts: true,
+        post: true,
       },
     });
   }
 
-  async updateUser(id: number, dto: UpdateUserDto) {
+  async updateUser(id: string, dto: UpdateUserDto) {
     const password = await hash(dto.password, 12);
     const user = await this.prisma.user.update({
       where: {
@@ -61,10 +62,23 @@ export class UserService {
     return user;
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     const user = await this.prisma.user.delete({
       where: {
         id: id,
+      },
+    });
+    return user;
+  }
+
+  async addRecruiterUser(id: string, dto: CompanyDto) {
+    const user = await this.prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        role: 'Recruiter',
+        companyId: dto.id,
       },
     });
     return user;

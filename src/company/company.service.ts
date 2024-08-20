@@ -11,10 +11,11 @@ export class CompanyService {
       select: {
         id: true,
         name: true,
-        employeeAmount: true,
-        jobs: true,
+        employees: true,
+        job: true,
         rating: true,
         sector: true,
+        application: true,
       },
     });
   }
@@ -25,10 +26,11 @@ export class CompanyService {
       select: {
         id: true,
         name: true,
-        employeeAmount: true,
-        jobs: true,
+        employees: true,
+        job: true,
         rating: true,
         sector: true,
+        application: true,
       },
       skip: (page - 1) * 10,
       take: 10,
@@ -40,37 +42,48 @@ export class CompanyService {
     const company = await this.prisma.company.create({
       data: {
         name: dto.name,
-        employeeAmount: dto.employeeAmount,
+        employees: dto.employeeAmount,
         sector: dto.sector,
       },
     });
     return company;
   }
 
-  async getCompany(id: number) {
+  async getCompany(id: string) {
     const company = await this.prisma.company.findUnique({
       where: {
-        id: Number(id),
+        id: id,
       },
     });
     return company;
   }
 
-  async update(id: number, dto: CompanyDto) {
+  async getLastApplications(id: string) {
+    const application = await this.prisma.application.findMany({
+      where: {
+        companyId: id,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+    });
+    return application;
+  }
+
+  async update(id: string, dto: CompanyDto) {
     const company = await this.prisma.company.update({
       where: {
         id: id,
       },
       data: {
         name: dto.name,
-        employeeAmount: dto.employeeAmount,
+        employees: dto.employeeAmount,
         rating: dto.rating,
       },
     });
     return company;
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     return this.prisma.company.delete({
       where: {
         id: id,

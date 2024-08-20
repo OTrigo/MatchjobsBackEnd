@@ -8,6 +8,7 @@ import {
   Param,
   ParseIntPipe,
   UseInterceptors,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { postDto } from './dto';
@@ -33,7 +34,7 @@ export class PostController {
   }
 
   @Get(':id')
-  getPost(@Param('id', ParseIntPipe) id: number) {
+  getPost(@Param('id', ParseUUIDPipe) id: string) {
     return this.postService.getPost(id);
   }
 
@@ -43,21 +44,21 @@ export class PostController {
   }
 
   @Delete('/:id')
-  deletePost(@Param('id', ParseIntPipe) id: number) {
+  deletePost(@Param('id') id: string) {
     return this.postService.deletePost(id);
   }
 
   @Post('addjob/:id')
-  addJob(@Param('id', ParseIntPipe) id: number, @Body() jobdto: jobDto) {
+  addJob(@Param('id') id: string, @Body() jobdto: jobDto) {
     return this.postService.addJob(id, jobdto);
   }
   @Get('myposts/:id')
-  getMyPosts(@Param('id', ParseIntPipe) id: number) {
+  getMyPosts(@Param('id') id: string) {
     return this.postService.getMyPosts(id);
   }
 
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: postDto) {
+  update(@Param('id') id: string, @Body() dto: postDto) {
     return this.postService.update(id, dto);
   }
 }

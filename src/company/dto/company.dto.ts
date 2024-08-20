@@ -10,10 +10,10 @@ import { jobDto } from 'src/job/dto';
 import { UserDto } from 'src/user/dto';
 
 export class CompanyDto {
-  @IsInt()
+  @IsString()
   @IsOptional()
   @ApiProperty()
-  id: number;
+  id: string;
 
   @IsString()
   @ApiProperty()
