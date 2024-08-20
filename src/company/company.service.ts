@@ -58,6 +58,17 @@ export class CompanyService {
     return company;
   }
 
+  async getLastApplications(id: string) {
+    const application = await this.prisma.application.findMany({
+      where: {
+        companyId: id,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10,
+    });
+    return application;
+  }
+
   async update(id: string, dto: CompanyDto) {
     const company = await this.prisma.company.update({
       where: {

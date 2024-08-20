@@ -44,21 +44,21 @@ export class PostController {
   }
 
   @Delete('/:id')
-  deletePost(@Param('id', ParseUUIDPipe) id: string) {
+  deletePost(@Param('id') id: string) {
     return this.postService.deletePost(id);
   }
 
   @Post('addjob/:id')
-  addJob(@Param('id', ParseUUIDPipe) id: string, @Body() jobdto: jobDto) {
+  addJob(@Param('id') id: string, @Body() jobdto: jobDto) {
     return this.postService.addJob(id, jobdto);
   }
   @Get('myposts/:id')
-  getMyPosts(@Param('id', ParseUUIDPipe) id: string) {
+  getMyPosts(@Param('id') id: string) {
     return this.postService.getMyPosts(id);
   }
 
   @Put(':id')
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: postDto) {
+  update(@Param('id') id: string, @Body() dto: postDto) {
     return this.postService.update(id, dto);
   }
 }

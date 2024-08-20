@@ -55,6 +55,8 @@ model application {
   user      user     @relation(fields: [userId], references: [id])
   job       job      @relation(fields: [jobId], references: [id])
   company   company? @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model post {
