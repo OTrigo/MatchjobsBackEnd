@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UseGuards,
   Req,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CompanyDto } from './dto';
@@ -43,7 +44,7 @@ export class CompanyController {
   @Get(':id')
   @Roles('Admin')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  getCompany(@Param('id', ParseIntPipe) id: number) {
+  getCompany(@Param('id') id: string) {
     return this.companyService.getCompany(id);
   }
 
@@ -57,14 +58,14 @@ export class CompanyController {
   @Put(':id')
   @Roles('Company', 'Admin')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: CompanyDto) {
+  update(@Param('id') id: string, @Body() dto: CompanyDto) {
     return this.companyService.update(id, dto);
   }
 
   @Delete(':id')
   @Roles('Admin')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id') id: string) {
     return this.companyService.delete(id);
   }
 
@@ -75,5 +76,12 @@ export class CompanyController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   getMe(@Req() req: any) {
     return req.user;
+  }
+
+  @Post('applications/:id')
+  @Roles('Company', 'Admin', 'Recruiter')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  getLastApplications(@Param('id') id: string) {
+    return this.companyService.getLastApplications(id);
   }
 }

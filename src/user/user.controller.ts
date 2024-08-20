@@ -8,6 +8,7 @@ import {
   UseInterceptors,
   UseGuards,
   Req,
+  Post,
 } from '@nestjs/common';
 import { ParseIntPipe } from '@nestjs/common/pipes';
 import { UpdateUserDto } from './dto';
@@ -16,6 +17,7 @@ import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { CompanyDto } from 'src/company/dto';
 
 @Controller('user')
 export class UserController {
@@ -40,37 +42,41 @@ export class UserController {
   }
 
   @Get(':id')
-  @Roles('Admin')
+  @Roles('Admin', 'User', 'Company')
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(15000)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  getUser(@Param('id', ParseIntPipe) id: number) {
+  getUser(@Param('id') id: string) {
     return this.userService.getUser(id);
   }
 
   @Put(':id')
-  @Roles('Admin', 'User')
+  @Roles('Admin', 'User', 'Recruiter')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  updateUser(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateUserDto,
-  ) {
+  updateUser(@Param('id') id: string, @Body() dto: UpdateUserDto) {
     return this.userService.updateUser(id, dto);
   }
 
   @Delete(':id')
   @Roles('Admin', 'User')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  deleteUser(@Param('id', ParseIntPipe) id: number, @Req() req: any) {
+  deleteUser(@Param('id') id: string, @Req() req: any) {
     return this.userService.delete(id);
   }
 
   @Get('me')
-  @Roles('User', 'Admin')
+  @Roles('User', 'Admin', 'Recruiter', 'Company')
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(15000)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   getMe(@Req() req: any) {
     return req.user;
+  }
+
+  @Post('bussiness/:id')
+  @Roles('Company', 'Admin')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  addRecruiterUser(@Param('id') id: string, @Body() dto: CompanyDto) {
+    return this.userService.addRecruiterUser(id, dto);
   }
 }

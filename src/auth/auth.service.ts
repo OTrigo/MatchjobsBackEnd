@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
+import { CompanyDto } from 'src/company/dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
   CreateBusinessUserDto,
@@ -25,7 +26,6 @@ export class authService {
     }
     const user = await this.prisma.user.create({
       data: {
-        id: dto.id,
         name: dto.name,
         email: dto.email,
         password: password,
@@ -95,7 +95,7 @@ export class authService {
   }
 
   async signInToken(
-    id: number,
+    id: string,
     name: string,
     email: string,
     password: string,
