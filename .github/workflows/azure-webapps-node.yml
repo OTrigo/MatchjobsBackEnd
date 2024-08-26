@@ -18,17 +18,11 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Cleaning cache
-      run: npm cache clean --force
-
-    - name: Verifying cache
-      run: npm cache verify
-
     - name: Install dependencies
       run: npm install
 
     - name: Build the project
-      run: npm run build --reset-cache
+      run: npm run build
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
