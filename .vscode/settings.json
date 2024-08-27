@@ -1,4 +1,0 @@
-{
-  "appService.defaultWebAppToDeploy": "/subscriptions/7d26dbea-65d0-47b3-b33d-7b742afdf9c7/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/MatchJobs",
-  "appService.deploySubpath": "."
-}
