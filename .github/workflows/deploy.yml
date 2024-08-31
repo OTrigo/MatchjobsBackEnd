@@ -1,0 +1,35 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v3
+
+    - name: Log in to Azure Container Registry
+      run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ secrets.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+
+    - name: Build the Docker image
+      run: docker build -t ${{ secrets.REGISTRY_URL }}/backendmj-alpine:latest .
+
+    - name: Push the Docker image to ACR
+      run: docker push ${{ secrets.REGISTRY_URL }}/backendmj-alpine:latest
+
+    - name: Deploy to Azure Container Instance
+      uses: azure/aci-deploy@v1
+      with:
+        resource-group: matchjobs
+        name: mjbackend
+        image: ${{ secrets.REGISTRY_URL }}/backendmj-alpine:latest
+        registry-login-server: ${{ secrets.REGISTRY_URL }}
+        registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        dns-name-label: matchjobsbackend
+        ports: 3000
