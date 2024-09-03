@@ -1,10 +1,14 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   ParseUUIDPipe,
   Post,
+  Query,
+  Redirect,
   Req,
+  Res,
 } from '@nestjs/common';
 import { authService } from './auth.service';
 import {
@@ -32,5 +36,16 @@ export class authController {
   @Post('signIn')
   signIn(@Body() dto: LoginUserDto) {
     return this.authService.signIn(dto);
+  }
+
+  @Get('redirectLinkedin')
+  @Redirect()
+  signUpLinkedin(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query() query: any,
+  ) {
+    res;
+    return this.authService.signUpLinkedin(req, res, query);
   }
 }

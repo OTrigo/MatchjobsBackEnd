@@ -11,6 +11,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule } from '@nestjs/config';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ConfigModule } from '@nestjs/config';
     JobModule,
     PostModule,
     PrismaModule,
+    UploadModule,
     CacheModule.register({
       isGlobal: true,
     }),
