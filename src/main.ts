@@ -26,8 +26,6 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
   });
-  await app.listen(3000, '0.0.0.0', () => {
-    console.log('Server is running...');
-  });
+  await app.listen(3000, '0.0.0.0');
 }
 bootstrap();
