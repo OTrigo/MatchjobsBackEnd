@@ -22,7 +22,7 @@ export class postDto {
   @IsString()
   title: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   videoUrl: string;
 
