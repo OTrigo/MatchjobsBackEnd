@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
+import { url } from 'inspector';
 import { CompanyDto } from 'src/company/dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
@@ -71,6 +72,13 @@ export class authService {
       user.password,
       user.role,
     );
+  }
+
+  async signUpLinkedin(req: any, res: any, query: any) {
+    if (query.code) {
+      return { url: `exp://localhost:8081/?code=${query.code}` };
+    }
+    return { url: '404' };
   }
 
   async signIn(dto: LoginUserDto) {
