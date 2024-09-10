@@ -8,8 +8,15 @@ export class AppController {
 
   @Get()
   @UseInterceptors(CacheInterceptor)
-  @CacheTTL(300000)
+  @CacheTTL(30000000)
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @Get('/redirect')
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30000000)
+  getReturn() {
+    return 'essa página já pode ser fechada';
   }
 }
