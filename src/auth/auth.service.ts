@@ -76,7 +76,7 @@ export class authService {
 
   async signUpLinkedin(req: any, res: any, query: any) {
     if (query.code) {
-      return { url: `exp://localhost:8081/?code=${query.code}` };
+      return { url: `/redirect/?code=${query.code}` };
     }
     return { url: '404' };
   }
