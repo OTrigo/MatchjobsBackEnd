@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { hash } from 'bcrypt';
@@ -46,6 +46,24 @@ export class UserService {
         post: true,
       },
     });
+  }
+
+  async getUserByEmail(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        post: true,
+      },
+    });
+    if (user) {
+      return user;
+    }
+    throw new HttpException('User not found', 404);
   }
 
   async updateUser(id: string, dto: UpdateUserDto) {

@@ -2,8 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Param,
-  ParseUUIDPipe,
   Post,
   Query,
   Redirect,
@@ -45,7 +43,6 @@ export class authController {
     @Res() res: Response,
     @Query() query: any,
   ) {
-    res;
     return this.authService.signUpLinkedin(req, res, query);
   }
 }
