@@ -41,7 +41,7 @@ export class UserController {
     return this.userService.getAll();
   }
 
-  @Get(':id')
+  @Get('/:id')
   @Roles('Admin', 'User', 'Company')
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(15000)
@@ -71,6 +71,12 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   getMe(@Req() req: any) {
     return req.user;
+  }
+
+  @Get('find/:email')
+  @UseGuards(AuthGuard('jwt'))
+  getUserByEmail(@Param('email') email: string) {
+    return this.userService.getUserByEmail(email);
   }
 
   @Post('bussiness/:id')
