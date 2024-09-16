@@ -60,14 +60,28 @@ model application {
 }
 
 model post {
-  id          String   @id @default(cuid()) @db.VarChar(30)
-  title       String   @db.VarChar(60)
-  description String   @db.VarChar(255)
-  videoUrl    String?  @db.Text
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      String   @db.VarChar(30)
-  jobId       String?  @db.VarChar(30)
-  user        user     @relation(fields: [userId], references: [id])
-  job         job?     @relation(fields: [jobId], references: [id])
+  id          String    @id @default(cuid()) @db.VarChar(30)
+  title       String    @db.VarChar(60)
+  description String    @db.VarChar(255)
+  videoUrl    String?   @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      String    @db.VarChar(30)
+  jobId       String?   @db.VarChar(30)
+  analyticsId String?   @db.VarChar(30)
+  user        user      @relation(fields: [userId], references: [id])
+  job         job?      @relation(fields: [jobId], references: [id])
+  analytic    analytic? @relation(fields: [analyticsId], references: [id])
+}
+
+model analytic {
+  id             String @id @default(cuid()) @db.VarChar(30)
+  views          Int    @default(0) @db.Integer
+  likes          Int    @default(0) @db.Integer
+  commentsAmount Int    @default(0) @db.Integer
+  shares         Int    @default(0) @db.Integer
+  saves          Int    @default(0) @db.Integer
+  score          Int    @default(0) @db.Integer
+  postId         String @db.VarChar(30)
+  post           post[]
 }
