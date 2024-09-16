@@ -17,6 +17,7 @@ export class PostService {
         createdAt: true,
         userId: true,
         user: true,
+        analyticsId: true,
         videoUrl: true,
       },
       skip: (page - 1) * 10,
@@ -36,6 +37,7 @@ export class PostService {
         videoUrl: true,
         user: false,
         jobId: true,
+        analyticsId: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -44,12 +46,68 @@ export class PostService {
   }
 
   async getPost(id: string) {
-    return this.prisma.post.findUnique({
+    const post = await this.prisma.post.findUnique({
       where: {
         id: id,
       },
+      include: {
+        analytic: true,
+      },
+    });
+    if (post) {
+      await this.viewPost(String(post.analyticsId));
+      return post;
+    }
+    throw new HttpException('POST NOT FOUND', HttpStatus.NOT_FOUND);
+  }
+
+  async viewPost(id: string) {
+    await this.prisma.analytic.update({
+      where: {
+        id: id,
+      },
+      data: {
+        views: { increment: 1 },
+      },
     });
   }
+
+  async likePost(id: string) {
+    return this.prisma.post.update({
+      where: {
+        id: id,
+      },
+      data: {
+        analytic: {
+          update: {
+            likes: { increment: 1 },
+          },
+        },
+      },
+      include: {
+        analytic: true,
+      },
+    });
+  }
+
+  async dislikePost(id: string) {
+    return this.prisma.post.update({
+      where: {
+        id: id,
+      },
+      data: {
+        analytic: {
+          update: {
+            likes: { decrement: 1 },
+          },
+        },
+      },
+      include: {
+        analytic: true,
+      },
+    });
+  }
+
   async getMyPosts(id: string) {
     const total = await this.prisma.post.count({
       where: {
@@ -59,6 +117,9 @@ export class PostService {
     const posts = await this.prisma.post.findMany({
       where: {
         userId: id,
+      },
+      include: {
+        analytic: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -75,6 +136,19 @@ export class PostService {
         description: dto.description,
         userId: dto.userId,
         videoUrl: dto.videoUrl,
+      },
+    });
+    const analytic = await this.prisma.analytic.create({
+      data: {
+        postId: post.id,
+      },
+    });
+    await this.prisma.post.update({
+      where: {
+        id: post.id,
+      },
+      data: {
+        analyticsId: analytic.id,
       },
     });
     if (dto.jobId) {
