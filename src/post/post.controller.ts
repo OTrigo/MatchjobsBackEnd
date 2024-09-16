@@ -34,7 +34,7 @@ export class PostController {
   }
 
   @Get(':id')
-  getPost(@Param('id', ParseUUIDPipe) id: string) {
+  getPost(@Param('id') id: string) {
     return this.postService.getPost(id);
   }
 
@@ -52,9 +52,20 @@ export class PostController {
   addJob(@Param('id') id: string, @Body() jobdto: jobDto) {
     return this.postService.addJob(id, jobdto);
   }
+
   @Get('myposts/:id')
   getMyPosts(@Param('id') id: string) {
     return this.postService.getMyPosts(id);
+  }
+
+  @Get('like/:id')
+  likePost(@Param('id') id: string) {
+    return this.postService.likePost(id);
+  }
+
+  @Get('dislike/:id')
+  dislikePost(@Param('id') id: string) {
+    return this.postService.dislikePost(id);
   }
 
   @Put(':id')
