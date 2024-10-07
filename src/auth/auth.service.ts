@@ -1,8 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
-import { url } from 'inspector';
-import { CompanyDto } from 'src/company/dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
   CreateBusinessUserDto,
@@ -82,7 +80,6 @@ export class authService {
   }
 
   async signIn(dto: LoginUserDto) {
-    console.log(dto);
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,

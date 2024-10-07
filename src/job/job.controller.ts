@@ -30,14 +30,15 @@ export class JobController {
   }
 
   @Get(':id')
-  getJob(@Param('id', ParseUUIDPipe) id: string) {
+  getJob(@Param('id') id: string) {
     return this.jobService.getJob(id);
   }
 
   @Post('')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('Company', 'Recruiter', 'Admin')
-  createJob(@Body() dto: jobDto) {
-    return this.jobService.createJob(dto);
+  createJob(@Req() req: any, @Body() dto: jobDto) {
+    return this.jobService.createJob(req, dto);
   }
 
   @Roles('Company', 'Recruiter', 'Admin')
@@ -46,19 +47,9 @@ export class JobController {
     return this.jobService.deleteJob(id);
   }
 
-  /*
-  @Post('portifolio/:id')
-  sendPortifolio(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() userdto: UserDto,
-  ) {
-    return this.jobService.sendPortifolio(id, userdto);
-  }
-  */
-
-  @Roles('User', 'Admin')
   @Post('apply/:id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('User', 'Admin')
   applyToJob(@Param('id') id: string, @Req() req: any) {
     return this.jobService.applyToJob(id, req.user);
   }

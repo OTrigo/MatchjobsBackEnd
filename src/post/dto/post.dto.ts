@@ -1,12 +1,9 @@
 import {
   IsDate,
-  IsInt,
   IsNotEmpty,
-  IsNumber,
   IsObject,
   IsOptional,
   IsString,
-  IsUUID,
 } from 'class-validator';
 
 export class postDto {
@@ -29,7 +26,7 @@ export class postDto {
   @IsString()
   description: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   userId: string;
 
