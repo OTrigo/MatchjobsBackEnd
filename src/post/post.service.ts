@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { postDto } from './dto';
-import { jobDto } from 'src/job/dto';
+import { jobDto, selectJobDto } from 'src/job/dto';
 
 @Injectable()
 export class PostService {
@@ -129,12 +129,12 @@ export class PostService {
     return { posts, total };
   }
 
-  async createPost(dto: postDto) {
+  async createPost(dto: postDto, req: any) {
     const post = await this.prisma.post.create({
       data: {
         title: dto.title,
         description: dto.description,
-        userId: dto.userId,
+        userId: req.user.id,
         videoUrl: dto.videoUrl,
       },
     });
@@ -178,7 +178,7 @@ export class PostService {
     return post;
   }
 
-  async addJob(id: string, jobdto: jobDto) {
+  async addJob(id: string, jobdto: selectJobDto) {
     const job = await this.prisma.job.findUnique({
       where: {
         id: jobdto.id,

@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Get,
   Header,
@@ -13,7 +12,6 @@ import {
 import { uploadService } from './upload.service';
 import { File, FileInterceptor } from '@nest-lab/fastify-multer';
 import { AuthGuard } from '@nestjs/passport';
-import { UserDto } from 'src/user/dto';
 
 @Controller('upload')
 export class UploadController {

@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDate,
@@ -52,3 +53,5 @@ export class jobDto {
   @IsOptional()
   postId: number;
 }
+
+export class selectJobDto extends PartialType(jobDto) {}
