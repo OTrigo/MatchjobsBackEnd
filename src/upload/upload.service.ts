@@ -1,8 +1,7 @@
 import { BlobServiceClient } from '@azure/storage-blob';
 import { File } from '@nest-lab/fastify-multer';
-import { HttpException, Injectable, StreamableFile } from '@nestjs/common';
+import { Injectable, StreamableFile } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserDto } from 'src/user/dto';
 
 @Injectable()
 export class uploadService {
