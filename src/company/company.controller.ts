@@ -10,7 +10,6 @@ import {
   UseInterceptors,
   UseGuards,
   Req,
-  ParseUUIDPipe,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CompanyDto } from './dto';
@@ -78,10 +77,24 @@ export class CompanyController {
     return req.user;
   }
 
-  @Post('applications/:id')
+  @Get('applications/:id')
   @Roles('Company', 'Admin', 'Recruiter')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   getLastApplications(@Param('id') id: string) {
     return this.companyService.getLastApplications(id);
+  }
+
+  @Get('applications/recruiter/:id')
+  @Roles('Company', 'Admin', 'Recruiter')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  getLastApplicationsByRecruiter(@Param('id') id: string) {
+    return this.companyService.getLastApplicationsByRecruiter(id);
+  }
+
+  @Get('applications/weekly')
+  @Roles('Company', 'Admin', 'Recruiter')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  getLastApplicationsWeekly() {
+    return this.companyService.getWeeklyApplicationsCount();
   }
 }

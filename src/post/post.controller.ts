@@ -8,12 +8,14 @@ import {
   Param,
   ParseIntPipe,
   UseInterceptors,
-  ParseUUIDPipe,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { postDto } from './dto';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
-import { jobDto } from 'src/job/dto';
+import { jobDto, selectJobDto } from 'src/job/dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('post')
 export class PostController {
@@ -39,8 +41,9 @@ export class PostController {
   }
 
   @Post('')
-  createPost(@Body() dto: postDto) {
-    return this.postService.createPost(dto);
+  @UseGuards(AuthGuard('jwt'))
+  createPost(@Body() dto: postDto, @Req() req: any) {
+    return this.postService.createPost(dto, req);
   }
 
   @Delete('/:id')
@@ -49,7 +52,7 @@ export class PostController {
   }
 
   @Post('addjob/:id')
-  addJob(@Param('id') id: string, @Body() jobdto: jobDto) {
+  addJob(@Param('id') id: string, @Body() jobdto: selectJobDto) {
     return this.postService.addJob(id, jobdto);
   }
 
