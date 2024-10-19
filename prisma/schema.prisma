@@ -58,6 +58,7 @@ model application {
   company   company? @relation(fields: [companyId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  status    String
 }
 
 model post {
