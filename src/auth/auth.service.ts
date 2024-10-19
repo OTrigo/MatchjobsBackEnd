@@ -23,12 +23,11 @@ export class authService {
     if (emailExists !== null) {
       throw new HttpException('E-mail already in use', HttpStatus.CONFLICT);
     }
-    const pass = await hash(dto.password, 12);
     const user = await this.prisma.user.create({
       data: {
         name: dto.name,
         email: dto.email,
-        password: pass,
+        password: password,
         role: 'User',
       },
     });

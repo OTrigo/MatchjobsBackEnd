@@ -37,19 +37,23 @@ export class UploadController {
 
   @Get('getVideo/:videoUrl')
   @Header('Accept-Ranges', 'bytes')
+  @Header('Content-type', 'video/mp4')
+  @Header('Content-Disposition', 'inline')
   async getVideo(@Param('videoUrl') videoUrl: string) {
     return this.uploadService.getvideoFile(videoUrl);
   }
 
   @Get('getPdf/:id')
-  @Header('Accept-Ranges', 'bytes')
+  @Header('Content-type', 'application/pdf')
+  @Header('Content-Disposition', 'inline')
   @UseGuards(AuthGuard('jwt'))
   async getPdf(@Param('id') id: string) {
     return this.uploadService.getPdfFile(id);
   }
 
   @Get('getMyPdf')
-  @Header('Accept-Ranges', 'bytes')
+  @Header('Content-type', 'application/pdf')
+  @Header('Content-Disposition', 'inline')
   @UseGuards(AuthGuard('jwt'))
   async getMyPdf(@Req() req: any) {
     return this.uploadService.getMyPdf(req);

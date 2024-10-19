@@ -63,12 +63,11 @@ export class uploadService {
     const blobClient = container.getBlockBlobClient(videoUrl);
     const file = await blobClient.downloadToBuffer();
     return new StreamableFile(file, {
-      disposition: 'inline',
-      type: 'video/mp4',
+      length: file.byteLength,
     });
   }
 
-  async getPdfFile(id: string): Promise<StreamableFile> {
+  async getPdfFile(id: string): Promise<Buffer> {
     const user = await this.prisma.user.findUnique({
       where: {
         id: id,
@@ -80,10 +79,10 @@ export class uploadService {
     const container = blobService.getContainerClient('cvupload');
     const blobClient = container.getBlockBlobClient(portifolio);
     const file = await blobClient.downloadToBuffer();
-    return new StreamableFile(file);
+    return file;
   }
 
-  async getMyPdf(req: any): Promise<StreamableFile> {
+  async getMyPdf(req: any): Promise<Buffer> {
     const user = await this.prisma.user.findUnique({
       where: {
         id: req.user.id,
@@ -95,6 +94,6 @@ export class uploadService {
     const container = blobService.getContainerClient('cvupload');
     const blobClient = await container.getBlockBlobClient(portifolio);
     const file = await blobClient.downloadToBuffer();
-    return new StreamableFile(file);
+    return file;
   }
 }
