@@ -7,6 +7,32 @@ import { jobDto, selectJobDto } from 'src/job/dto';
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
+  async getMyPaginatedPosts(page: number, id: string) {
+    const total = await this.prisma.post.count({
+      where: {
+        userId: id,
+      },
+    });
+    const posts = await this.prisma.post.findMany({
+      where: {
+        userId: id,
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        createdAt: true,
+        userId: true,
+        user: true,
+        analyticsId: true,
+        videoUrl: true,
+      },
+      skip: (page - 1) * 10,
+      take: 10,
+    });
+    return { posts, total };
+  }
+
   async getPage(page: number) {
     const total = await this.prisma.post.count();
     const posts = await this.prisma.post.findMany({
