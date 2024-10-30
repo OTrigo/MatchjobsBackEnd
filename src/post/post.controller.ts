@@ -28,6 +28,13 @@ export class PostController {
     return this.postService.getPage(page);
   }
 
+  @Get('myPosts/:id/page/:amt')
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30000)
+  getMyPostsPaginated(@Param('amt', ParseIntPipe) page: number, id: string) {
+    return this.postService.getMyPaginatedPosts(page, id);
+  }
+
   @Get('')
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(30000)
