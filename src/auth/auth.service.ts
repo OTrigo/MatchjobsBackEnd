@@ -13,8 +13,6 @@ export class authService {
   constructor(private prisma: PrismaService, private jwt: JwtService) {}
 
   async signUp(dto: CreateUserDto) {
-    const password = await hash(dto.password, 12);
-
     const emailExists = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
