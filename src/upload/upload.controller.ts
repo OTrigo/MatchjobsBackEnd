@@ -2,9 +2,11 @@ import {
   Controller,
   Get,
   Header,
+  Headers,
   Param,
   Post,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -39,8 +41,17 @@ export class UploadController {
   @Header('Accept-Ranges', 'bytes')
   @Header('Content-type', 'video/mp4')
   @Header('Content-Disposition', 'inline')
-  async getVideo(@Param('videoUrl') videoUrl: string) {
-    return this.uploadService.getvideoFile(videoUrl);
+  async getVideo(
+    @Param('videoUrl') videoUrl: string,
+    @Headers('range') range: string,
+    @Headers('user-agent') userAgent: string,
+    @Res({ passthrough: true }) res: any,
+  ) {
+    if (userAgent.includes('Firefox')) {
+      return this.uploadService.getvideoFileFirefox(videoUrl, range, res);
+    } else {
+      return this.uploadService.getvideoFile(videoUrl);
+    }
   }
 
   @Get('getPdf/:id')

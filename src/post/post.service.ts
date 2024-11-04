@@ -18,6 +18,7 @@ export class PostService {
         userId: true,
         user: true,
         analyticsId: true,
+        analytic: true,
         videoUrl: true,
       },
       skip: (page - 1) * 10,
@@ -38,6 +39,7 @@ export class PostService {
         user: false,
         jobId: true,
         analyticsId: true,
+        analytic: true,
       },
       orderBy: {
         createdAt: 'desc',
