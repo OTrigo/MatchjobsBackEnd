@@ -32,6 +32,7 @@ export class authService {
         role: 'User',
       },
     });
+
     return this.signInToken(
       user.id,
       user.name,
