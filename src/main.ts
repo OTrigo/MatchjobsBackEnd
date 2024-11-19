@@ -8,6 +8,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import fastyfyMultipart from '@fastify/multipart';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -19,6 +20,13 @@ async function bootstrap() {
     }),
   );
 
+  const config = new DocumentBuilder()
+    .setTitle('Matchjobs API')
+    .setDescription('The Matchjobs set of APIs')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
   await app.register(helmet);
   await app.register(fastyfyMultipart);
   app.useGlobalPipes(new ValidationPipe());
@@ -26,6 +34,10 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
   });
-  await app.listen(3000, '0.0.0.0');
+
+  const documentFactory = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory);
+
+  await app.listen({ port: 3000, host: '0.0.0.0' });
 }
 bootstrap();

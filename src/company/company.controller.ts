@@ -94,7 +94,8 @@ export class CompanyController {
   @Get('applications/weekly')
   @Roles('Company', 'Admin', 'Recruiter')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  getLastApplicationsWeekly() {
-    return this.companyService.getWeeklyApplicationsCount();
+  getLastApplicationsWeekly(@Req() req: any) {
+    console.log(req.user);
+    return this.companyService.getWeeklyApplicationsCount(req);
   }
 }
