@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CompanyDto } from './dto/';
 
@@ -82,19 +82,27 @@ export class CompanyService {
     return jobs;
   }
 
-  async getWeeklyApplicationsCount() {
-    /*
-    Return applications created in the last 7 days
-    In the following format:
-    monday: 10,
-    tuesday: 5,
-    ...
-    */
+  async getWeeklyApplicationsCount(req: any) {
+    let data = {
+      monday: 0,
+      tuesday: 0,
+      wednesday: 0,
+      thursday: 0,
+      friday: 0,
+      saturday: 0,
+      sunday: 0,
+    };
+
+    if (req.companyId === null) {
+      throw new HttpException('Unauthorized', 401);
+    }
+
     const applications = await this.prisma.application.findMany({
       where: {
         createdAt: {
           gte: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
         },
+        companyId: req.companyId,
       },
     });
 
@@ -110,7 +118,10 @@ export class CompanyService {
       {},
     );
 
-    return weeklyApplicationsCount;
+    data = { ...data, ...weeklyApplicationsCount };
+    console.log(data);
+
+    return data;
   }
 
   async update(id: string, dto: CompanyDto) {
