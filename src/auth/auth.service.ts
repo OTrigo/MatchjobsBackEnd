@@ -39,6 +39,7 @@ export class authService {
       user.email,
       user.password,
       user.role,
+      user.portifolio
     );
   }
 
@@ -71,6 +72,7 @@ export class authService {
       user.email,
       user.password,
       user.role,
+      user.portifolio
     );
   }
 
@@ -96,6 +98,7 @@ export class authService {
           user.email,
           user.password,
           user.role,
+          user.portifolio
         );
     }
     throw new HttpException('Wrong Email or Password', HttpStatus.UNAUTHORIZED);
@@ -107,6 +110,7 @@ export class authService {
     email: string,
     password: string,
     role: string,
+    portifolio: string | null
   ): Promise<{ access_token: string }> {
     const payload = {
       id: id,
@@ -114,10 +118,11 @@ export class authService {
       email: email,
       password: password,
       role: role,
+      portifolio: portifolio
     };
 
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '1d',
+      expiresIn: '14d',
       secret: process.env.JWT_SECRET,
     });
 
