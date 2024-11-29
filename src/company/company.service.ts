@@ -108,7 +108,7 @@ export class CompanyService {
 
     // Process the applications to get the count per day
     const weeklyApplicationsCount = applications.reduce(
-      (acc: { [key: string]: number }, application) => {
+      (acc: { [key: string]: number }, application: any) => {
         const day = application.createdAt
           .toLocaleString('en-us', { weekday: 'long' })
           .toLowerCase();
