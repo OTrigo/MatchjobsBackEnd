@@ -21,21 +21,25 @@ export class authService {
     if (emailExists !== null) {
       throw new HttpException('E-mail already in use', HttpStatus.CONFLICT);
     }
-    const pass = await hash(dto.password, 12);
+
+    const password = await hash(dto.password, 12);
+
     const user = await this.prisma.user.create({
       data: {
         name: dto.name,
         email: dto.email,
-        password: pass,
+        password: password,
         role: 'User',
       },
     });
+
     return this.signInToken(
       user.id,
       user.name,
       user.email,
       user.password,
       user.role,
+      user.portifolio
     );
   }
 
@@ -68,6 +72,7 @@ export class authService {
       user.email,
       user.password,
       user.role,
+      user.portifolio
     );
   }
 
@@ -93,6 +98,7 @@ export class authService {
           user.email,
           user.password,
           user.role,
+          user.portifolio
         );
     }
     throw new HttpException('Wrong Email or Password', HttpStatus.UNAUTHORIZED);
@@ -104,6 +110,7 @@ export class authService {
     email: string,
     password: string,
     role: string,
+    portifolio: string | null
   ): Promise<{ access_token: string }> {
     const payload = {
       id: id,
@@ -111,10 +118,11 @@ export class authService {
       email: email,
       password: password,
       role: role,
+      portifolio: portifolio
     };
 
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '1d',
+      expiresIn: '14d',
       secret: process.env.JWT_SECRET,
     });
 

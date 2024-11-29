@@ -2,9 +2,11 @@ import {
   Controller,
   Get,
   Header,
+  Headers,
   Param,
   Post,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -37,19 +39,32 @@ export class UploadController {
 
   @Get('getVideo/:videoUrl')
   @Header('Accept-Ranges', 'bytes')
-  async getVideo(@Param('videoUrl') videoUrl: string) {
-    return this.uploadService.getvideoFile(videoUrl);
+  @Header('Content-type', 'video/mp4')
+  @Header('Content-Disposition', 'inline')
+  async getVideo(
+    @Param('videoUrl') videoUrl: string,
+    @Headers('range') range: string,
+    @Headers('user-agent') userAgent: string,
+    @Res({ passthrough: true }) res: any,
+  ) {
+    if (userAgent.includes('Firefox')) {
+      return this.uploadService.getvideoFileFirefox(videoUrl, range, res);
+    } else {
+      return this.uploadService.getvideoFile(videoUrl);
+    }
   }
 
   @Get('getPdf/:id')
-  @Header('Accept-Ranges', 'bytes')
+  @Header('Content-type', 'application/pdf')
+  @Header('Content-Disposition', 'inline')
   @UseGuards(AuthGuard('jwt'))
   async getPdf(@Param('id') id: string) {
     return this.uploadService.getPdfFile(id);
   }
 
   @Get('getMyPdf')
-  @Header('Accept-Ranges', 'bytes')
+  @Header('Content-type', 'application/pdf')
+  @Header('Content-Disposition', 'inline')
   @UseGuards(AuthGuard('jwt'))
   async getMyPdf(@Req() req: any) {
     return this.uploadService.getMyPdf(req);
