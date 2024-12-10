@@ -80,6 +80,13 @@ export class CompanyController {
   @Get('applications/:id')
   @Roles('Company', 'Admin', 'Recruiter')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
+  getApplications(@Param('id') id: string) {
+    return this.companyService.getAllApplications(id);
+  }
+
+  @Get('lastApplications/:id')
+  @Roles('Company', 'Admin', 'Recruiter')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   getLastApplications(@Param('id') id: string) {
     return this.companyService.getLastApplications(id);
   }
@@ -89,6 +96,13 @@ export class CompanyController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   getLastApplicationsByRecruiter(@Param('id') id: string) {
     return this.companyService.getLastApplicationsByRecruiter(id);
+  }
+
+  @Get('applications/job/:id')
+  @Roles('Company', 'Admin', 'Recruiter')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  getApplicationByJob(@Param('id') id: string) {
+    return this.companyService.getApplicationByJob(id);
   }
 
   @Get('applications/weekly')
