@@ -63,6 +63,9 @@ export class CompanyService {
       where: {
         companyId: id,
       },
+      select: {
+        user: true,
+      },
       orderBy: { createdAt: 'desc' },
       take: 10,
     });
