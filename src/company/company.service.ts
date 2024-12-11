@@ -69,8 +69,19 @@ export class CompanyService {
     return application;
   }
 
+  async getAllApplications(id: string) {
+    const application = await this.prisma.application.aggregate({
+      where: {
+        companyId: id,
+      },
+      orderBy: { createdAt: 'desc' },
+      _count: true,
+    });
+    return application;
+  }
+
   async getLastApplicationsByRecruiter(id: string) {
-    const jobs = await this.prisma.job.findMany({
+    const applications = await this.prisma.job.findMany({
       where: {
         createdBy: id,
       },
@@ -79,7 +90,20 @@ export class CompanyService {
       },
       take: 10,
     });
-    return jobs;
+    return applications;
+  }
+
+  async getApplicationByJob(id: string) {
+    const applications = await this.prisma.application.findMany({
+      where: {
+        jobId: id,
+      },
+      select: {
+        job: true,
+        user: true,
+      },
+    });
+    return applications;
   }
 
   async getWeeklyApplicationsCount(req: any) {
@@ -108,7 +132,7 @@ export class CompanyService {
 
     // Process the applications to get the count per day
     const weeklyApplicationsCount = applications.reduce(
-      (acc: { [key: string]: number }, application) => {
+      (acc: { [key: string]: number }, application: any) => {
         const day = application.createdAt
           .toLocaleString('en-us', { weekday: 'long' })
           .toLowerCase();

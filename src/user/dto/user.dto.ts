@@ -8,7 +8,7 @@ import {
   IsArray,
 } from 'class-validator';
 
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import { CompanyDto } from 'src/company/dto';
 
 export class UserDto {

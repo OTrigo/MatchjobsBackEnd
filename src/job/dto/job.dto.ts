@@ -3,7 +3,6 @@ import {
   IsBoolean,
   IsDate,
   IsNotEmpty,
-  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -45,13 +44,13 @@ export class jobDto {
   @IsOptional()
   user: object;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  userId: number;
+  userId: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  postId: number;
+  postId: string;
 }
 
 export class selectJobDto extends PartialType(jobDto) {}
