@@ -45,4 +45,9 @@ export class authController {
   ) {
     return this.authService.signUpLinkedin(req, res, query);
   }
+
+  @Post('createAccountLinkedin')
+  createAccountLinkedin(@Body() body: any) {
+    return this.authService.createAccountLinkedin(body);
+  }
 }
