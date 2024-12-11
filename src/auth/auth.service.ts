@@ -107,6 +107,54 @@ export class authService {
     throw new HttpException('Wrong Email or Password', HttpStatus.UNAUTHORIZED);
   }
 
+  async createAccountLinkedin(body: any) {
+    if (body === null) {
+      throw new HttpException('Request Body is empty', HttpStatus.BAD_REQUEST);
+    }
+
+    const emailExists = await this.prisma.user.findUnique({
+      where: {
+        email: body.email,
+      },
+    });
+
+    if (emailExists !== null) {
+      return this.signInToken(
+        body.id,
+        body.name,
+        body.email,
+        body.password,
+        body.role,
+        body.portifolio,
+        body.companyId,
+      );
+    }
+
+    const password = await hash(
+      Math.random().toString(36).slice(2, 10) + '!@',
+      12,
+    );
+
+    const user = await this.prisma.user.create({
+      data: {
+        name: body.name,
+        email: body.email,
+        password: password,
+        role: 'User',
+      },
+    });
+
+    return this.signInToken(
+      user.id,
+      user.name,
+      user.email,
+      user.password,
+      user.role,
+      user.portifolio,
+      user.companyId,
+    );
+  }
+
   async signInToken(
     id: string,
     name: string,
