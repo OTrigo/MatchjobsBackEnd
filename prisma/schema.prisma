@@ -44,7 +44,7 @@ model job {
   createdBy   String        @db.VarChar(30)
   post        post[]
   application application[]
-  company     company?      @relation(fields: [companyId], references: [id])
+  company     company?      @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   companyId   String?       @db.VarChar(30)
 }
 
