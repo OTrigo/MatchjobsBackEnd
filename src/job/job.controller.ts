@@ -7,7 +7,6 @@ import {
   Body,
   Delete,
   UseInterceptors,
-  ParseUUIDPipe,
   UseGuards,
   Req,
 } from '@nestjs/common';
@@ -43,7 +42,7 @@ export class JobController {
 
   @Roles('Company', 'Recruiter', 'Admin')
   @Delete(':id')
-  deleteJob(@Param('id', ParseUUIDPipe) id: string) {
+  deleteJob(@Param('id') id: string) {
     return this.jobService.deleteJob(id);
   }
 
